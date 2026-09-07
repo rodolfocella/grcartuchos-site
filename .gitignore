@@ -7,3 +7,4 @@ collectors/build/
 collectors/dist/
 collectors/*.spec
 .DS_Store
+nginx/htpasswd_pma
