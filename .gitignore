@@ -6,3 +6,4 @@ collectors/.venv/
 collectors/build/
 collectors/dist/
 collectors/*.spec
+.DS_Store

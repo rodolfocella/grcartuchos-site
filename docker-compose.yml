@@ -88,6 +88,7 @@ services:
       PDV_DB_PASSWORD: ${PDV_DB_PASSWORD}
       PDV_MATRIX_DB: sistem84_matriz
       PDV_DEFAULT_DB: sistem84_impressoras
+      COLLECTOR_API_SECRET: ${COLLECTOR_API_SECRET}
     volumes:
       # Production code is copied directly to the VPS and deliberately ignored
       # by Git because legacy PHP files contain database credentials.
@@ -102,6 +103,48 @@ services:
     networks:
       - zap_net
 
+  # ── E-mail (Poste.io) ──────────────────────────────────────────────
+  # Substitui o e-mail da HostGator (mail.grcartuchos.com.br). Escolhido no
+  # lugar do Mailcow por ser um único container (bem mais leve — a VPS tem
+  # só ~4GB livres, e o Mailcow sozinho recomenda uns 6GB).
+  #
+  # HTTPS=OFF: o painel/webmail (porta 80 interna) fica só em HTTP, sem TLS
+  # próprio — o zap_nginx (repositório zap-agenda) é quem termina HTTPS e
+  # faz proxy_pass pra "mail:80", mesmo padrão do zap_wordpress. As portas
+  # de protocolo de e-mail de verdade (25/465/587/143/993/etc.) não passam
+  # pelo nginx — são TCP puro, publicadas direto pro IP público da VPS.
+  #
+  # DISABLE_CLAMAV=TRUE: antivírus de anexos desligado por economia de RAM
+  # (ClamAV sozinho usa 1-1.5GB). Reativar (mudar pra FALSE) se sobrar RAM
+  # ou se isso virar um problema de segurança real.
+  #
+  # 127.0.0.1:8086:80 publicado só no loopback — usado para configurar o
+  # setup inicial via túnel SSH, antes do DNS/nginx público apontarem pra
+  # cá (mail.grcartuchos.com.br ainda é a HostGator até o corte de verdade).
+  mail:
+    image: analogic/poste.io:2.5.4
+    container_name: gr_mail
+    restart: unless-stopped
+    hostname: mail.grcartuchos.com.br
+    environment:
+      TZ: America/Sao_Paulo
+      HTTPS: "OFF"
+      DISABLE_CLAMAV: "TRUE"
+    volumes:
+      - gr_mail_data:/data
+    ports:
+      - "25:25"
+      - "110:110"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+      - "4190:4190"
+      - "127.0.0.1:8086:80"
+    networks:
+      - zap_net
+
   code-server:
     image: codercom/code-server:4.133.0
     container_name: gr_code_server
@@ -112,10 +155,11 @@ services:
       DOCKER_USER: root
       DEFAULT_WORKSPACE: /home/coder/project
     volumes:
-      # Only the two requested application trees are writable. Secrets,
-      # database dumps and the Docker socket are intentionally not mounted.
+      # Application files and the explicitly requested environment file are
+      # writable. Database dumps and the Docker socket remain unavailable.
       - zap_wp_data:/home/coder/project/site-wordpress
       - ./pdv:/home/coder/project/pdv
+      - ./.env:/home/coder/project/config/.env
       - ./code-server:/root/.local/share/code-server
     ports:
       - "127.0.0.1:8085:8080"
@@ -134,6 +178,7 @@ volumes:
   zap_mysql_data:
     external: true
     name: zap-agenda_zap_mysql_data
+  gr_mail_data:
 
 # ── Rede ─────────────────────────────────────────────────────────────
 # Mesma rede do zap-agenda — é assim que o nginx compartilhado (zap_nginx,
