@@ -66,6 +66,20 @@ compartilhado (no repositório zap-agenda):
 docker exec zap_nginx nginx -s reload
 ```
 
+### Acesso ao banco com phpMyAdmin
+
+O phpMyAdmin escuta somente em `127.0.0.1:8083` na VPS e não fica exposto
+publicamente. Abra um túnel a partir da sua máquina:
+
+```bash
+ssh -N -L 8083:127.0.0.1:8083 root@82.25.76.130
+```
+
+Enquanto esse terminal estiver aberto, acesse `http://127.0.0.1:8083` no
+navegador. Entre com `MYSQL_USER` e `MYSQL_PASSWORD` definidos no `.env` da
+VPS. O usuário root também funciona com `MYSQL_ROOT_PASSWORD`, mas prefira o
+usuário restrito da aplicação para operações rotineiras.
+
 ## Estado atual (2026-09-07)
 
 - wp-content (2GB) e banco de dados (380MB, prefixo de tabela `wpga_`) já

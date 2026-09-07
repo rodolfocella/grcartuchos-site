@@ -58,6 +58,24 @@ services:
     networks:
       - zap_net
 
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    container_name: gr_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 512M
+    # Deliberately bound to the VPS loopback interface. Access it from a
+    # workstation through an SSH tunnel; never expose phpMyAdmin publicly.
+    ports:
+      - "127.0.0.1:8083:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - zap_net
+
 # ── Volumes ──────────────────────────────────────────────────────────
 # external + name explícito: são os MESMOS volumes já criados quando esses
 # containers ainda viviam dentro do docker-compose.yml do zap-agenda —
