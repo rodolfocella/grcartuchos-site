@@ -80,6 +80,14 @@ navegador. Entre com `MYSQL_USER` e `MYSQL_PASSWORD` definidos no `.env` da
 VPS. O usuário root também funciona com `MYSQL_ROOT_PASSWORD`, mas prefira o
 usuário restrito da aplicação para operações rotineiras.
 
+### PDV legado
+
+O PDV roda no serviço `pdv`, inicialmente restrito a `127.0.0.1:8084` para
+teste por túnel SSH. O diretório `pdv/` e os dumps de banco não pertencem ao
+Git porque contêm credenciais e dados de clientes. Enquanto a validação não
+terminar, o DNS de `pdv.grcartuchos.com.br` continua apontando para a
+HostGator; a cópia da VPS não recebe tráfego real.
+
 ## Estado atual (2026-09-07)
 
 - wp-content (2GB) e banco de dados (380MB, prefixo de tabela `wpga_`) já

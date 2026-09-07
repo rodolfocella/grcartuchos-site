@@ -76,6 +76,26 @@ services:
     networks:
       - zap_net
 
+  pdv:
+    build:
+      context: .
+      dockerfile: wordpress/Dockerfile.pdv
+    container_name: gr_pdv
+    restart: unless-stopped
+    volumes:
+      # Production code is copied directly to the VPS and deliberately ignored
+      # by Git because legacy PHP files contain database credentials.
+      - ./pdv:/var/www/html
+    ports:
+      # Temporary preview only. Public traffic remains on HostGator until the
+      # migrated copy has been tested and the DNS record is changed.
+      - "127.0.0.1:8084:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - zap_net
+
 # ── Volumes ──────────────────────────────────────────────────────────
 # external + name explícito: são os MESMOS volumes já criados quando esses
 # containers ainda viviam dentro do docker-compose.yml do zap-agenda —
