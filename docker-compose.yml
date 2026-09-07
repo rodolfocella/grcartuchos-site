@@ -1,0 +1,80 @@
+version: "3.9"
+
+# ══════════════════════════════════════════════════════════════════
+#  Site institucional da GR Cartuchos (grcartuchos.com.br)
+#  WordPress + WooCommerce + Elementor, migrado da HostGator em 2026-09-07.
+#
+#  Roda na mesma VPS do Zap Agenda/ZapAtende, mas é um produto totalmente
+#  separado (site institucional da empresa-mãe, não o SaaS) — por isso vive
+#  no seu próprio repositório em vez de dentro de zap-agenda/.
+#
+#  Reaproveita a rede Docker e os volumes que já existiam quando esses
+#  serviços foram criados dentro do docker-compose.yml do zap-agenda (por
+#  isso os nomes "externos" abaixo têm o prefixo zap-agenda_) — e depende
+#  do nginx compartilhado do zap-agenda (zap_nginx) para expor HTTPS, já
+#  que só uma VPS/porta 80-443 existe. Ver README.md para o fluxo completo.
+# ══════════════════════════════════════════════════════════════════
+
+services:
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: zap_wordpress
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      WORDPRESS_DB_HOST:     mysql
+      WORDPRESS_DB_NAME:     ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER:     ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      # Site real migrado da HostGator usa esse prefixo — não é o padrão wp_.
+      WORDPRESS_TABLE_PREFIX: wpga_
+    volumes:
+      - zap_wp_data:/var/www/html
+      - ./wordpress/php-overrides.ini:/usr/local/etc/php/conf.d/zzz-overrides.ini:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - zap_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: zap_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE}
+      MYSQL_USER:          ${MYSQL_USER}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
+    volumes:
+      - zap_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - zap_net
+
+# ── Volumes ──────────────────────────────────────────────────────────
+# external + name explícito: são os MESMOS volumes já criados quando esses
+# containers ainda viviam dentro do docker-compose.yml do zap-agenda —
+# aponta pra eles em vez de criar volumes novos vazios, senão o site e o
+# banco migrados hoje "sumiriam" (ficariam presos no volume antigo).
+volumes:
+  zap_wp_data:
+    external: true
+    name: zap-agenda_zap_wp_data
+  zap_mysql_data:
+    external: true
+    name: zap-agenda_zap_mysql_data
+
+# ── Rede ─────────────────────────────────────────────────────────────
+# Mesma rede do zap-agenda — é assim que o nginx compartilhado (zap_nginx,
+# no outro repositório) consegue alcançar "zap_wordpress:80" por nome.
+networks:
+  zap_net:
+    external: true
+    name: zap-agenda_zap_net
