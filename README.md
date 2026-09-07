@@ -106,6 +106,33 @@ ssh -N -L 8085:127.0.0.1:8085 root@82.25.76.130
 Depois acesse `http://127.0.0.1:8085`. O socket do Docker, o `.env` e os dumps
 de banco não são montados no editor.
 
+### E-mail próprio (Poste.io)
+
+Servidor de e-mail self-hosted rodando no serviço `mail` (container
+`gr_mail`), escolhido no lugar do Mailcow por caber na RAM livre da VPS (um
+único container, ~1-2GB, contra os ~6GB recomendados pro Mailcow). Painel de
+administração e webmail em **https://webmail.grcartuchos.com.br** (proxy do
+zap_nginx pra `mail:80`, certificado Let's Encrypt próprio).
+
+Contas criadas: `rodolfo@grcartuchos.com.br` (administrador) e
+`janaine@grcartuchos.com.br`. Senhas geradas na criação — trocar no primeiro
+acesso pelo próprio painel (My account → Change password).
+
+DKIM: chave própria gerada com selector `s20260907624` (nome escolhido pelo
+Poste.io, não é "default" — coexiste sem conflito com o DKIM antigo da
+HostGator até o corte de MX). Registro TXT correspondente já adicionado na
+zona do Registro.br.
+
+**Ainda não migrado de verdade** — `mail.grcartuchos.com.br` continua
+apontando pra HostGator (`162.241.203.10`), então o e-mail real da empresa
+segue funcionando normalmente por lá enquanto isso é testado. Falta, antes
+do corte de MX:
+- A Hostinger liberar a porta 25 de entrada pro IP da VPS (bloqueada por
+  padrão — chamado aberto em 2026-09-07). Sem isso, nenhum servidor externo
+  consegue *entregar* e-mail pra cá, mesmo com tudo o resto certo.
+- Testar envio/recebimento direto contra o IP da VPS (bypassando DNS, como
+  foi feito com o WordPress) antes de mudar o A record de `mail`.
+
 ## Estado atual (2026-09-07)
 
 - wp-content (2GB) e banco de dados (380MB, prefixo de tabela `wpga_`) já
