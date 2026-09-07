@@ -1,3 +1,4 @@
 .env
 pdv/
 database-dumps/
+code-server/

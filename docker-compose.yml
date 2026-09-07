@@ -102,6 +102,26 @@ services:
     networks:
       - zap_net
 
+  code-server:
+    image: codercom/code-server:4.133.0
+    container_name: gr_code_server
+    restart: unless-stopped
+    user: "0:0"
+    environment:
+      PASSWORD: ${CODE_SERVER_PASSWORD}
+      DOCKER_USER: root
+      DEFAULT_WORKSPACE: /home/coder/project
+    volumes:
+      # Only the two requested application trees are writable. Secrets,
+      # database dumps and the Docker socket are intentionally not mounted.
+      - zap_wp_data:/home/coder/project/site-wordpress
+      - ./pdv:/home/coder/project/pdv
+      - ./code-server:/root/.local/share/code-server
+    ports:
+      - "127.0.0.1:8085:8080"
+    networks:
+      - zap_net
+
 # ── Volumes ──────────────────────────────────────────────────────────
 # external + name explícito: são os MESMOS volumes já criados quando esses
 # containers ainda viviam dentro do docker-compose.yml do zap-agenda —

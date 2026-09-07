@@ -93,6 +93,19 @@ As credenciais de banco usadas pelo PHP ficam exclusivamente nas variáveis
 esses valores ao legado via `getenv()`; não adicione senhas diretamente aos
 arquivos PHP nem volte a preencher `empresas.db_pass` na base matriz.
 
+### Editor de arquivos pelo navegador
+
+O serviço `code-server` oferece um VS Code web com acesso gravável somente a
+`site-wordpress/` e `pdv/`. Ele escuta em `127.0.0.1:8085` na VPS e exige a
+senha `CODE_SERVER_PASSWORD` do `.env`. Abra por túnel SSH:
+
+```bash
+ssh -N -L 8085:127.0.0.1:8085 root@82.25.76.130
+```
+
+Depois acesse `http://127.0.0.1:8085`. O socket do Docker, o `.env` e os dumps
+de banco não são montados no editor.
+
 ## Estado atual (2026-09-07)
 
 - wp-content (2GB) e banco de dados (380MB, prefixo de tabela `wpga_`) já
