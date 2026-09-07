@@ -9,6 +9,13 @@ Este é um repositório separado porque o site institucional é um produto
 independente do SaaS (Zap Agenda/ZapAtende) — só compartilha a mesma VPS por
 economia de infraestrutura, não faz parte do mesmo produto.
 
+> Nota: no GitHub este repositório se chama `grcartuchos-site` (sem hífen
+> entre "gr" e "cartuchos"), mas o diretório local e o caminho na VPS
+> (`/root/gr-cartuchos-site`, já referenciado no bind mount do nginx e nos
+> comentários deste repositório) usam hífen. É só uma inconsistência de
+> nome, não afeta nada — não vale a pena renomear agora e ter que redigitar
+> o caminho em produção.
+
 ## O que NÃO foi migrado
 
 - `pdv.grcartuchos.com.br` — sistema à parte, com seu próprio docroot na
