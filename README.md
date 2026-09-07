@@ -88,6 +88,11 @@ Git porque contêm credenciais e dados de clientes. Enquanto a validação não
 terminar, o DNS de `pdv.grcartuchos.com.br` continua apontando para a
 HostGator; a cópia da VPS não recebe tráfego real.
 
+As credenciais de banco usadas pelo PHP ficam exclusivamente nas variáveis
+`PDV_DB_USER` e `PDV_DB_PASSWORD` do `.env` da VPS. `db_env.php` fornece
+esses valores ao legado via `getenv()`; não adicione senhas diretamente aos
+arquivos PHP nem volte a preencher `empresas.db_pass` na base matriz.
+
 ## Estado atual (2026-09-07)
 
 - wp-content (2GB) e banco de dados (380MB, prefixo de tabela `wpga_`) já

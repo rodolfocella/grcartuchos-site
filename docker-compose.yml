@@ -82,6 +82,12 @@ services:
       dockerfile: wordpress/Dockerfile.pdv
     container_name: gr_pdv
     restart: unless-stopped
+    environment:
+      PDV_DB_HOST: mysql
+      PDV_DB_USER: ${PDV_DB_USER}
+      PDV_DB_PASSWORD: ${PDV_DB_PASSWORD}
+      PDV_MATRIX_DB: sistem84_matriz
+      PDV_DEFAULT_DB: sistem84_impressoras
     volumes:
       # Production code is copied directly to the VPS and deliberately ignored
       # by Git because legacy PHP files contain database credentials.
