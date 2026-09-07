@@ -112,41 +112,40 @@ de banco não são montados no editor.
   importados e funcionando no container.
 - `php-overrides.ini` sobe o `memory_limit` do PHP para 512M — o padrão de
   128M não é suficiente pro WooCommerce/Elementor.
-- Nginx só em HTTP puro (`listen 80`) — **ainda sem DNS real apontando pra
-  VPS**, então sem certificado TLS ainda. Verificado funcionando via
-  `curl --resolve grcartuchos.com.br:80:<IP-da-VPS> http://grcartuchos.com.br/`
-  e visualmente via `agent-browser` com `--host-resolver-rules`, sem tocar
-  em DNS real.
+- **DNS já cortado e HTTPS real no ar.** `grcartuchos.com.br` responde 200
+  em `https://` com certificado Let's Encrypt válido (`www` redireciona pro
+  domínio principal); `api.grcartuchos.com.br` também tem certificado
+  próprio para a API dos coletores (ver seção "Coletores" abaixo).
 
-## Corte de DNS pendente
+## Corte de DNS (concluído em 2026-09-07)
 
-O domínio está registrado no Registro.br com nameservers apontando pra
+O domínio estava registrado no Registro.br com nameservers apontando pra
 Cloudflare (`hadlee.ns.cloudflare.com`, `shane.ns.cloudflare.com`) — sem
-login conhecido dessa conta Cloudflare. Decisão tomada: trocar os
-nameservers do domínio para os da Hostinger no Registro.br, em vez de tentar
-recuperar o acesso à Cloudflare.
+login conhecido dessa conta Cloudflare. Em vez de tentar recuperar acesso à
+Cloudflare **ou** cadastrar o domínio numa conta de terceiro (a ideia
+original de usar o DNS da Hostinger foi abandonada por exigir cadastrar o
+domínio lá antes — a API retorna `404 Domain not found` pra qualquer domínio
+que não esteja na conta), o caminho usado foi mais simples: trocar os
+nameservers para os do **próprio Registro.br** (`d.sec.dns.br` /
+`f.sec.dns.br`), que já suporta editar a zona DNS diretamente no painel do
+domínio, sem precisar de nenhum provedor terceiro.
 
-**Pré-requisito**: o domínio `grcartuchos.com.br` ainda não está cadastrado
-na conta Hostinger (checado via API — só `atendezapbrasil.com.br` aparece no
-portfólio). Precisa ser adicionado pelo hPanel (login) antes de qualquer
-registro poder ser criado lá.
+**Registros recriados na zona do Registro.br** (o inventário original foi
+levantado via `dig`, domínio público, sem precisar de acesso à Cloudflare):
 
-**Inventário de DNS atual** (consultado via `dig`, domínio público, sem
-precisar de acesso à Cloudflare), pra recriar na zona da Hostinger antes de
-migrar os nameservers — importante não perder e-mail no meio do caminho:
-
-| Tipo | Nome | Valor atual | O que fazer na Hostinger |
+| Tipo | Nome | Valor | Observação |
 |---|---|---|---|
-| A | `@` | 172.67.195.54 / 104.21.90.47 (proxy Cloudflare) | Trocar para o IP da VPS do Zap Agenda (site migrado pra cá) |
-| A | `www` | idem | Trocar para o IP da VPS, igual ao `@` |
-| A | `mail` | 162.241.203.10 (real, HostGator) | Manter apontando pro mesmo IP da HostGator |
-| A | `pdv` | proxy Cloudflare (origem real provavelmente 162.241.203.7, mesmo servidor do cPanel) | Manter apontando pra HostGator — confirmar IP exato com o suporte antes de trocar, já que é o sistema em uso |
-| A | `cpanel`, `webmail`, `autodiscover`, `autoconfig`, `ftp` | proxy Cloudflare | Manter apontando pra HostGator (mesmo IP real do `mail`/`pdv`) |
-| MX | `@` | `mail.grcartuchos.com.br`, prioridade 1 | Manter igual |
-| TXT | `@` (SPF) | `v=spf1 a mx include:websitewelcome.com ~all` | Manter igual |
-| TXT | `default._domainkey` (DKIM) | ver valor real via `dig TXT default._domainkey.grcartuchos.com.br` | Manter igual, copiar o valor exato |
+| A | `grcartuchos.com.br` | `82.25.76.130` (VPS) | Site migrado pra cá |
+| A | `www.grcartuchos.com.br` | `82.25.76.130` | Redireciona pro domínio principal |
+| A | `api.grcartuchos.com.br` | `82.25.76.130` | API dos coletores (`/contador`) |
+| A | `mail.grcartuchos.com.br` | `162.241.203.10` (HostGator) | Servidor de e-mail, não migrado |
+| A | `pdv.grcartuchos.com.br` | `162.241.203.10` (HostGator) | Sistema legado, não migrado |
+| A | `www.pdv.grcartuchos.com.br` | `162.241.203.10` (HostGator) | idem |
+| MX | `grcartuchos.com.br` | `1 mail.grcartuchos.com.br.` | Mantido igual |
+| TXT | `grcartuchos.com.br` (SPF) | `v=spf1 a mx include:websitewelcome.com ~all` | Mantido igual |
+| TXT | `default._domainkey` (DKIM) | (chave RSA, ver zona) | **Foi esquecido na primeira leva e faltou** — causou um período sem DKIM até ser notado e recriado com o valor exato copiado da Cloudflare antes da troca. Se o DNS de um domínio for cortado de novo no futuro, DKIM é fácil de esquecer porque não aparece em nenhum lugar óbvio (não é A/MX) — sempre conferir explicitamente com `dig TXT default._domainkey.<dominio>` antes e depois do corte. |
 
-Depois desses registros recriados e confirmados na zona Hostinger, aí sim
-trocar os nameservers no Registro.br. Fazer isso fora de ordem (trocar NS
-antes de recriar os registros) derruba o e-mail da empresa até alguém notar
-e corrigir.
+**Ainda não recriados** (existiam apontando pra HostGator via Cloudflare,
+baixo risco mas afetam conveniência): `autodiscover`, `autoconfig`,
+`webmail`, `cpanel`, `ftp` — todos deveriam apontar para `162.241.203.10`
+(mesmo IP do `mail`/`pdv`) se forem recriados.
