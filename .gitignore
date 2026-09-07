@@ -2,3 +2,7 @@
 pdv/
 database-dumps/
 code-server/
+collectors/.venv/
+collectors/build/
+collectors/dist/
+collectors/*.spec
