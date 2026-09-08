@@ -19,9 +19,8 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-Reescrevendo o lote 3 (mais páginas) das 113 páginas de bairro
-duplicadas — 2026-09-08. Não vou mexer em `ops/sync-contador.sh` nem em
-nada relacionado ao PDV/contador.
+(livre) — última coisa feita: lote 3 (mais 10 páginas, 28/113 no total)
++ schema por página + SEO title/description customizados, ver CLAUDE.md.
 
 ## Codex
 (livre)
