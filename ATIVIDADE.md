@@ -19,7 +19,9 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre)
+Criando página de marketing do Atende Zap Brasil no site WordPress
+(nova página, conteúdo em `wordpress/`) — 2026-09-08. Não vou mexer em
+`ops/sync-contador.sh` nem em nada relacionado ao PDV/contador.
 
 ## Codex
 (livre)
