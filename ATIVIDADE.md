@@ -19,8 +19,9 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: lote 3 (mais 10 páginas, 28/113 no total)
-+ schema por página + SEO title/description customizados, ver CLAUDE.md.
+(livre) — última coisa feita: lote 4 (mais 10 páginas, 38/113 no total)
++ links internos entre bairros vizinhos + FAQ específico no schema, ver
+CLAUDE.md.
 
 ## Codex
 (livre)
