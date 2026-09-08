@@ -19,8 +19,9 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: lote 2 (mais 9 páginas, 18/113 no total)
-das páginas de bairro duplicadas, ver CLAUDE.md.
+Reescrevendo o lote 3 (mais páginas) das 113 páginas de bairro
+duplicadas — 2026-09-08. Não vou mexer em `ops/sync-contador.sh` nem em
+nada relacionado ao PDV/contador.
 
 ## Codex
 (livre)
