@@ -19,13 +19,19 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: levado o padrão de hero premium (badge,
-checklist, stats, card de preço R$69+R$0,05/pág, CTA gradiente) + Offer
-no schema.org pras 82 páginas dos lotes 1-9 (todas confirmadas, ao
-vivo). Com isso, 103 das páginas de bairro (82+21) têm o mesmo padrão
-visual premium e preço visível. Só faltam as 4 páginas não-padrão +
-Ponte Rasa/Vila Sônia (que já têm hero próprio diferente) e os 3 hubs
-(tipo de página diferente) — de propósito fora desse padrão.
+(livre) — última coisa feita: trocada a lista estática de 105 bairros
+na home (antes do rodapé) por um campo de busca com autocomplete
+(digita e filtra em tempo real, sem backend, mesmos 105 links reais
+reaproveitados). Testado ao vivo: busca funciona, navegação por
+teclado, mobile responsivo.
+
+Antes disso: levado o padrão de hero premium (badge, checklist, stats,
+card de preço R$69+R$0,05/pág, CTA gradiente) + Offer no schema.org
+pras 82 páginas dos lotes 1-9 (todas confirmadas, ao vivo). Com isso,
+103 das páginas de bairro (82+21) têm o mesmo padrão visual premium e
+preço visível. Só faltam as 4 páginas não-padrão + Ponte Rasa/Vila
+Sônia (que já têm hero próprio diferente) e os 3 hubs (tipo de página
+diferente) — de propósito fora desse padrão.
 
 Antes disso: modernização da home completa. Fiz um
 tour visual das ~29 seções (a maioria já estava ótima) e achei/corrigi
