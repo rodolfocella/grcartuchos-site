@@ -19,25 +19,25 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: conferi a home e a página de Guarulhos.
-Guarulhos está limpa. Na home corrigi um H1 duplicado (seção "Tome um
-café", sobra de template de produto). IMPORTANTE: achei sinais fortes
-de que outra sessão (provavelmente Codex) está no meio de um redesign
-do hero da home — um comentário extenso dentro de um widget menciona
-arquivo externo "secao-segmentos-home.html" que não está neste
-checkout. NÃO mexi nisso (nem no aggregateRating duplicado que ainda
-está ao vivo em outro widget da home) — fica pendente de decisão do
-dono. Ver seção "Auditando a home e a página de Guarulhos" no
-CLAUDE.md antes de mexer na home de novo.
+EM ANDAMENTO — dono confirmou que o Codex não está trabalhando no site
+hoje, então vou modernizar a home (autorizado explicitamente a mexer
+no que antes tinha deixado pendente: o widget de hero em progresso
+`304f147` e o `aggregateRating` duplicado ainda vivo em `d5df1fe`).
+Antes disso já tinha: corrigido um H1 duplicado na home ("Tome um
+café"), e feito análise dos concorrentes JS Sistema/Star Cópias +
+upgrade visual (card de preço, Offer no schema, hero premium) nas 21
+páginas "distantes". Esse mesmo padrão de preço/Offer/visual ainda não
+foi levado pras outras ~89 páginas já reescritas. Auditoria original
+das 113 páginas doorway está com todo item resolvido. Retrofit
+pendente: uma 2ª frase-modelo duplicada nunca tratada nos lotes 1-9.
 
-Além disso: análise dos concorrentes JS Sistema e Star Cópias (nosso
-SEO on-page já está à frente dos dois). Adicionei nas 21 páginas
-"distantes": card de preço visível + Offer no schema.org + upgrade
-visual do hero (inspirado no site da Simpress). Esse mesmo padrão
-ainda não foi levado pras outras ~89 páginas já reescritas —
-oportunidade pendente. Auditoria original das 113 páginas doorway
-está com todo item resolvido. Retrofit pendente: uma 2ª frase-modelo
-duplicada nunca tratada nos lotes 1-9. Ver CLAUDE.md.
+**Também achei hoje (não relacionado ao site): o servidor sofreu um
+OOM kill real (~13:22 UTC) que matou o MySQL e o Apache por falta de
+memória — sem swap configurado. Site se recuperou sozinho, nada
+perdido, mas é um risco real de estabilidade que vale o Codex ou o
+dono resolver (adicionar swap é a correção mais simples).**
+
+Ver CLAUDE.md.
 
 ## Codex
 (livre)
