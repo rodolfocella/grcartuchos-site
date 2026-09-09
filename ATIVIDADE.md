@@ -19,10 +19,10 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — lote 7 da reescrita das páginas de bairro de SP (10 páginas,
-59-68/113), mesmo padrão dos lotes 3-6 (schema+FAQ+SEO-meta+links internos).
-Só mexendo em conteúdo/postmeta do WordPress via wp-cli, sem tocar em
-docker-compose, nginx, cron ou scripts em ops/.
+(livre) — última coisa feita: lote 7 (mais 10 páginas, 68/113 no total)
+das páginas de bairro de SP/Grande SP, incluindo Arujá (cidade vizinha).
+Ponte Rasa foi excluída do lote por já ter conteúdo próprio adaptado.
+Ver CLAUDE.md.
 
 ## Codex
 (livre)
