@@ -19,9 +19,10 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: lote 5 (mais 10 páginas, 48/113 no total)
-das páginas de bairro de SP + correção de bug de link com sufixo "-sp",
-ver CLAUDE.md.
+(livre) — última coisa feita: lote 6 (mais 10 páginas, 58/113 no total)
+das páginas de bairro de SP + descoberta/correção do alt-text de imagens
+compartilhadas (fix em nível de attachment, vale pra todas as 113+
+páginas), ver CLAUDE.md.
 
 ## Codex
 (livre)
