@@ -19,7 +19,18 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: trocada a lista estática de 105 bairros
+EM ANDAMENTO — mexendo em CRON DA VPS (não é específico deste repo,
+é backup do servidor inteiro): configurando um backup diário completo
+da VPS (tar.gz de tudo exceto cache de camadas Docker/containerd,
+reproduzível) + mysqldump, com script em `/root/backups/` na VPS.
+O arquivo sempre sobrescreve o anterior (~6,4GB comprimido, testado).
+Depois um LaunchAgent no Mac do dono puxa esse arquivo diariamente via
+rsync, sobrescrevendo a cópia local também. NÃO mexendo em nenhum cron
+já existente (renovação de certificado, sync-contador) — só
+adicionando um novo, cuidado especial pra não colidir com o que já
+existe.
+
+Antes disso: trocada a lista estática de 105 bairros
 na home (antes do rodapé) por um campo de busca com autocomplete
 (digita e filtra em tempo real, sem backend, mesmos 105 links reais
 reaproveitados). Testado ao vivo: busca funciona, navegação por
