@@ -19,19 +19,25 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: análise dos concorrentes JS Sistema e
-Star Cópias (nosso SEO on-page já está à frente dos dois — eles têm
-bugs reais: JS sem H1, Star sem schema.org nenhum e duas tags <title>
-na mesma página). Com base nisso, adicionei nas 21 páginas "distantes":
-card de preço visível no hero (R$69/mês + R$0,05/página, confirmado
-pelo dono) + Offer no schema.org (mesmo padrão já usado na página
-flagship de Guarulhos). Também fiz upgrade visual do hero (gradientes,
-formas decorativas, stats tipo glass) inspirado no site da Simpress.
-Esse mesmo padrão (preço + Offer + visual novo) ainda não foi levado
-pras outras ~89 páginas já reescritas — oportunidade pendente.
-Auditoria original das 113 páginas doorway está com todo item
-resolvido. Retrofit pendente: uma 2ª frase-modelo duplicada nunca
-tratada nos lotes 1-9. Ver CLAUDE.md.
+(livre) — última coisa feita: conferi a home e a página de Guarulhos.
+Guarulhos está limpa. Na home corrigi um H1 duplicado (seção "Tome um
+café", sobra de template de produto). IMPORTANTE: achei sinais fortes
+de que outra sessão (provavelmente Codex) está no meio de um redesign
+do hero da home — um comentário extenso dentro de um widget menciona
+arquivo externo "secao-segmentos-home.html" que não está neste
+checkout. NÃO mexi nisso (nem no aggregateRating duplicado que ainda
+está ao vivo em outro widget da home) — fica pendente de decisão do
+dono. Ver seção "Auditando a home e a página de Guarulhos" no
+CLAUDE.md antes de mexer na home de novo.
+
+Além disso: análise dos concorrentes JS Sistema e Star Cópias (nosso
+SEO on-page já está à frente dos dois). Adicionei nas 21 páginas
+"distantes": card de preço visível + Offer no schema.org + upgrade
+visual do hero (inspirado no site da Simpress). Esse mesmo padrão
+ainda não foi levado pras outras ~89 páginas já reescritas —
+oportunidade pendente. Auditoria original das 113 páginas doorway
+está com todo item resolvido. Retrofit pendente: uma 2ª frase-modelo
+duplicada nunca tratada nos lotes 1-9. Ver CLAUDE.md.
 
 ## Codex
 (livre)
