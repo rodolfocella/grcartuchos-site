@@ -19,11 +19,10 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: retrofit dos lotes 1-2 (18 páginas) que
-ainda não tinham schema/FAQ/SEO-meta/links internos — agora estão no
-mesmo padrão dos lotes mais novos, incluindo "resposta rápida"/speakable.
-Também organizei a área de trabalho do Mac (script organizar_mesa.command
-já existente, só rodei de novo). Ver CLAUDE.md.
+EM ANDAMENTO — retrofit de "resposta rápida"/schema speakable nos lotes
+3-8 (68 páginas), + link interno pendente do lote 3. Só mexendo em
+conteúdo/postmeta do WordPress via wp-cli, sem tocar em docker-compose,
+nginx, cron ou ops/.
 
 ## Codex
 (livre)
