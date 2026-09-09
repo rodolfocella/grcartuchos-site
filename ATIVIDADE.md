@@ -19,9 +19,9 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-Retomando o lote 5 (mais 10 páginas) das 113 páginas de bairro duplicadas
-de São Paulo — 2026-09-08. Não vou mexer em `ops/sync-contador.sh` nem em
-nada relacionado ao PDV/contador.
+(livre) — última coisa feita: lote 5 (mais 10 páginas, 48/113 no total)
+das páginas de bairro de SP + correção de bug de link com sufixo "-sp",
+ver CLAUDE.md.
 
 ## Codex
 (livre)
