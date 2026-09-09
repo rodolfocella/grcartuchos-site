@@ -19,12 +19,14 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — resolvido o bug do elementskit (plugin real instalado via
-wp-cli, `elementskit-lite`, corrige de uma vez uma seção inteira que
-estava invisível em dezenas de páginas). Falta só decidir o que fazer com
-o cluster de ~9 bairros muito distantes de Guarulhos — última pendência
-da lista. Só mexendo em conteúdo/plugins do WordPress via wp-cli, sem
-tocar em docker-compose, nginx, cron ou ops/.
+EM ANDAMENTO — o dono corrigiu a decisão anterior: a empresa atende sim
+essas áreas distantes (com impressora mais robusta, Canon 1643, pra
+reduzir manutenção, e mesmo prazo de 24h). Já revertido o redirect que eu
+tinha feito nas 9 páginas (voltaram a publish). Agora reescrevendo essas
+21 páginas (9 bairros de SP + 12 achadas numa checagem final, incluindo
+cidades como Barueri/Alphaville/Carapicuíba/Igaratá/Santa Isabel) com
+conteúdo honesto sobre esse modelo de atendimento estendido. Só mexendo
+em conteúdo/postmeta do WordPress via wp-cli.
 
 ## Codex
 (livre)
