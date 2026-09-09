@@ -19,11 +19,12 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: retrofit de "resposta rápida"/schema
-speakable nas 60 páginas dos lotes 3-8, incluindo o link interno que
-faltava no lote 3 e, de brinde, o fix do bug "-sp" nos links de todas
-essas páginas. Lotes 1-9 (82 páginas) agora estão todos no mesmo padrão.
-Ver CLAUDE.md.
+EM ANDAMENTO — investigando as 4 páginas de template não-padrão (Vila
+Maria, Vila Mariana, Ermelino Matarazzo, Campo Belo), depois Ponte
+Rasa/Vila Sônia, depois o bug do elementskit, depois o cluster de bairros
+distantes — um de cada vez, até o fim da lista pendente. Só mexendo em
+conteúdo/postmeta do WordPress via wp-cli, sem tocar em docker-compose,
+nginx, cron ou ops/.
 
 ## Codex
 (livre)
