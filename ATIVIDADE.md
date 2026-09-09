@@ -19,10 +19,11 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: lote 8 (mais 10 páginas, 78/113 no total)
-das páginas de bairro de SP. Achadas mais 2 páginas já únicas/adaptadas
-(Pari e Vila Sônia), excluídas do lote sem precisar de reescrita.
-Ver CLAUDE.md.
+EM ANDAMENTO — lote 9 da reescrita das páginas de bairro de SP (10 páginas,
+79-88/113) + criando um arquivo llms.txt na raiz do site (novo, GEO para
+buscadores de IA). Mexendo em conteúdo/postmeta do WordPress via wp-cli e
+adicionando um arquivo estático no container; sem tocar em docker-compose,
+nginx, cron ou ops/.
 
 ## Codex
 (livre)
