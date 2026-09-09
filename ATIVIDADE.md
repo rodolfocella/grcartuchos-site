@@ -19,9 +19,10 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — investigando as 4 páginas de template não-padrão (Vila
-Maria, Vila Mariana, Ermelino Matarazzo, Campo Belo), depois Ponte
-Rasa/Vila Sônia, depois o bug do elementskit, depois o cluster de bairros
+EM ANDAMENTO — resolvida a 1ª pendência (as 4 páginas de template
+não-padrão eram na verdade páginas premium já boas, só limpei conteúdo
+duplicado e adicionei SEO-meta). Seguindo agora pra Ponte Rasa/Vila
+Sônia, depois o bug do elementskit, depois o cluster de bairros
 distantes — um de cada vez, até o fim da lista pendente. Só mexendo em
 conteúdo/postmeta do WordPress via wp-cli, sem tocar em docker-compose,
 nginx, cron ou ops/.
