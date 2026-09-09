@@ -19,16 +19,19 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: upgrade visual do hero nas 21 páginas
-"distantes" (gradientes, formas decorativas, cards de estatística tipo
-glass, botão com gradiente), inspirado no site da Simpress a pedido do
-dono. Antes disso, removidas as 2 seções antigas de CTA dessas mesmas
-21 páginas. Esse mesmo padrão antigo (CTA velho) existe nas outras ~89
-páginas já reescritas (não mexido ainda). Auditoria original das 113
-páginas doorway está com todo item resolvido. Retrofit pendente pro
-futuro: uma 2ª frase-modelo duplicada nunca tratada nos lotes 1-9.
-Próximo: analisar concorrentes (JS Sistemas de Impressão, Star Cópias)
-a pedido do dono. Ver CLAUDE.md.
+(livre) — última coisa feita: análise dos concorrentes JS Sistema e
+Star Cópias (nosso SEO on-page já está à frente dos dois — eles têm
+bugs reais: JS sem H1, Star sem schema.org nenhum e duas tags <title>
+na mesma página). Com base nisso, adicionei nas 21 páginas "distantes":
+card de preço visível no hero (R$69/mês + R$0,05/página, confirmado
+pelo dono) + Offer no schema.org (mesmo padrão já usado na página
+flagship de Guarulhos). Também fiz upgrade visual do hero (gradientes,
+formas decorativas, stats tipo glass) inspirado no site da Simpress.
+Esse mesmo padrão (preço + Offer + visual novo) ainda não foi levado
+pras outras ~89 páginas já reescritas — oportunidade pendente.
+Auditoria original das 113 páginas doorway está com todo item
+resolvido. Retrofit pendente: uma 2ª frase-modelo duplicada nunca
+tratada nos lotes 1-9. Ver CLAUDE.md.
 
 ## Codex
 (livre)
