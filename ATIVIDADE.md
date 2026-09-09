@@ -19,13 +19,12 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — resolvidas as 4 páginas de template não-padrão e agora
-Ponte Rasa/Vila Sônia também (essas duas tinham um problema real de
-schema: entidade LocalBusiness concorrente, telefone errado e
-aggregateRating inventado — corrigido). Seguindo agora pro bug do
-elementskit, depois o cluster de bairros distantes — um de cada vez, até
-o fim da lista pendente. Só mexendo em conteúdo/postmeta do WordPress via
-wp-cli, sem tocar em docker-compose, nginx, cron ou ops/.
+EM ANDAMENTO — resolvido o bug do elementskit (plugin real instalado via
+wp-cli, `elementskit-lite`, corrige de uma vez uma seção inteira que
+estava invisível em dezenas de páginas). Falta só decidir o que fazer com
+o cluster de ~9 bairros muito distantes de Guarulhos — última pendência
+da lista. Só mexendo em conteúdo/plugins do WordPress via wp-cli, sem
+tocar em docker-compose, nginx, cron ou ops/.
 
 ## Codex
 (livre)
