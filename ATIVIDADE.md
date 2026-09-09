@@ -19,11 +19,13 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — levando o padrão de hero premium (badge, checklist,
-stats, card de preço, CTA gradiente) + Offer no schema.org pras 82
-páginas dos lotes 1-9 (que hoje só têm o "resposta rápida" simples).
-Trabalhando em sub-lotes pra não sobrecarregar a VPS (já teve um OOM
-hoje). Só mexendo em conteúdo/postmeta do WordPress via wp-cli.
+(livre) — última coisa feita: levado o padrão de hero premium (badge,
+checklist, stats, card de preço R$69+R$0,05/pág, CTA gradiente) + Offer
+no schema.org pras 82 páginas dos lotes 1-9 (todas confirmadas, ao
+vivo). Com isso, 103 das páginas de bairro (82+21) têm o mesmo padrão
+visual premium e preço visível. Só faltam as 4 páginas não-padrão +
+Ponte Rasa/Vila Sônia (que já têm hero próprio diferente) e os 3 hubs
+(tipo de página diferente) — de propósito fora desse padrão.
 
 Antes disso: modernização da home completa. Fiz um
 tour visual das ~29 seções (a maioria já estava ótima) e achei/corrigi
