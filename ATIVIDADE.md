@@ -19,14 +19,18 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: backup diário completo da VPS pronto e
-testado ponta a ponta. VPS gera `/root/backups/vps-full-backup.tar.gz`
-(6,4GB) + `/root/db-dumps/all-databases.sql` (411MB) todo dia às 2h via
-`/etc/cron.d/gr-full-vps-backup` (não mexi em nenhum cron já existente,
-só adicionei um novo). O Mac do dono puxa isso às 9h via LaunchAgent +
-rsync, sempre sobrescrevendo a cópia local anterior (mesmo
-comportamento do snapshot semanal da Hostinger, só que diário e fora
-da VPS). Detalhes técnicos e descoberta do bug do rsync antigo do
+(livre) — última coisa feita: backup diário completo da VPS ficou
+pronto e testado ponta a ponta, mas por pedido do dono o agendamento
+automático foi DESATIVADO no mesmo dia (removido o cron na VPS e
+descarregado o LaunchAgent no Mac) — os dois scripts continuam
+intactos e funcionando, só não rodam mais sozinhos. Em vez disso,
+criado `~/VPS-Backups/run-backup-now.sh` no Mac do dono: um único
+comando (`bash ~/VPS-Backups/run-backup-now.sh`) que gera o backup na
+VPS e já puxa pro Mac, para rodar sob demanda quando o dono avisar.
+VPS gera `/root/backups/vps-full-backup.tar.gz` (6,4GB) +
+`/root/db-dumps/all-databases.sql` (411MB); Mac sempre sobrescreve a
+cópia local anterior (mesmo comportamento do snapshot semanal da
+Hostinger). Detalhes técnicos e descoberta do bug do rsync antigo do
 macOS no CLAUDE.md.
 
 Antes disso: trocada a lista estática de 105 bairros
