@@ -19,23 +19,27 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — dono confirmou que o Codex não está trabalhando no site
-hoje, então vou modernizar a home (autorizado explicitamente a mexer
-no que antes tinha deixado pendente: o widget de hero em progresso
-`304f147` e o `aggregateRating` duplicado ainda vivo em `d5df1fe`).
-Antes disso já tinha: corrigido um H1 duplicado na home ("Tome um
-café"), e feito análise dos concorrentes JS Sistema/Star Cópias +
+EM ANDAMENTO — corrigido o schema duplicado da home (o `304f147` já era
+o hero real/ativo, não um rascunho — entendimento inicial estava
+errado; o problema de verdade era só o `d5df1fe`, uma seção antiga e
+válida que ainda carregava um LocalBusiness+aggregateRating duplicado e
+arriscado — removido só o `<script>` de dados estruturados, conteúdo
+visível 100% preservado). Antes disso: corrigido H1 duplicado na home
+("Tome um café"), análise dos concorrentes JS Sistema/Star Cópias +
 upgrade visual (card de preço, Offer no schema, hero premium) nas 21
-páginas "distantes". Esse mesmo padrão de preço/Offer/visual ainda não
-foi levado pras outras ~89 páginas já reescritas. Auditoria original
-das 113 páginas doorway está com todo item resolvido. Retrofit
-pendente: uma 2ª frase-modelo duplicada nunca tratada nos lotes 1-9.
+páginas "distantes". Continuando agora a modernizar a home mais a
+fundo, a pedido do dono. Esse mesmo padrão de preço/Offer/visual ainda
+não foi levado pras outras ~89 páginas já reescritas. Auditoria
+original das 113 páginas doorway está com todo item resolvido.
+Retrofit pendente: uma 2ª frase-modelo duplicada nunca tratada nos
+lotes 1-9.
 
-**Também achei hoje (não relacionado ao site): o servidor sofreu um
-OOM kill real (~13:22 UTC) que matou o MySQL e o Apache por falta de
-memória — sem swap configurado. Site se recuperou sozinho, nada
-perdido, mas é um risco real de estabilidade que vale o Codex ou o
-dono resolver (adicionar swap é a correção mais simples).**
+**Também achei hoje (não relacionado ao conteúdo do site): o servidor
+sofreu um OOM kill real (~13:22 UTC) que matou o MySQL e o Apache por
+falta de memória — sem swap configurado. Site se recuperou sozinho,
+nada perdido, mas é um risco real de estabilidade que vale o Codex ou
+o dono resolver (adicionar swap é a correção mais simples). Ver seção
+"Real VPS outage" no CLAUDE.md.**
 
 Ver CLAUDE.md.
 
