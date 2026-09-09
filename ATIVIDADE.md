@@ -19,7 +19,13 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: modernização da home completa. Fiz um
+EM ANDAMENTO — levando o padrão de hero premium (badge, checklist,
+stats, card de preço, CTA gradiente) + Offer no schema.org pras 82
+páginas dos lotes 1-9 (que hoje só têm o "resposta rápida" simples).
+Trabalhando em sub-lotes pra não sobrecarregar a VPS (já teve um OOM
+hoje). Só mexendo em conteúdo/postmeta do WordPress via wp-cli.
+
+Antes disso: modernização da home completa. Fiz um
 tour visual das ~29 seções (a maioria já estava ótima) e achei/corrigi
 3 problemas reais: bug de markdown (`**texto**` aparecendo literal em
 vez de negrito, em 2 widgets) e 2 seções datadas ("Multifuncional
