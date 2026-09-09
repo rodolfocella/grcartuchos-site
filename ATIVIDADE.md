@@ -19,11 +19,12 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — lote 9 da reescrita das páginas de bairro de SP (10 páginas,
-79-88/113) + criando um arquivo llms.txt na raiz do site (novo, GEO para
-buscadores de IA). Mexendo em conteúdo/postmeta do WordPress via wp-cli e
-adicionando um arquivo estático no container; sem tocar em docker-compose,
-nginx, cron ou ops/.
+(livre) — última coisa feita: lote 9 (mais 4 páginas, 82/113 no total,
+lote menor por honestidade de distância — resto do bairros muito longe de
+Guarulhos ficou de fora) + técnica nova de "resposta rápida"/schema
+speakable pra buscadores de IA + llms.txt na raiz do site + 3 páginas de
+zona/cidade (São Paulo, Zona Centro-Sul, Zona Sudeste) convertidas em
+páginas-hub com diretório de links reais. Ver CLAUDE.md.
 
 ## Codex
 (livre)
