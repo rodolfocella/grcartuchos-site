@@ -19,16 +19,15 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — mexendo em CRON DA VPS (não é específico deste repo,
-é backup do servidor inteiro): configurando um backup diário completo
-da VPS (tar.gz de tudo exceto cache de camadas Docker/containerd,
-reproduzível) + mysqldump, com script em `/root/backups/` na VPS.
-O arquivo sempre sobrescreve o anterior (~6,4GB comprimido, testado).
-Depois um LaunchAgent no Mac do dono puxa esse arquivo diariamente via
-rsync, sobrescrevendo a cópia local também. NÃO mexendo em nenhum cron
-já existente (renovação de certificado, sync-contador) — só
-adicionando um novo, cuidado especial pra não colidir com o que já
-existe.
+(livre) — última coisa feita: backup diário completo da VPS pronto e
+testado ponta a ponta. VPS gera `/root/backups/vps-full-backup.tar.gz`
+(6,4GB) + `/root/db-dumps/all-databases.sql` (411MB) todo dia às 2h via
+`/etc/cron.d/gr-full-vps-backup` (não mexi em nenhum cron já existente,
+só adicionei um novo). O Mac do dono puxa isso às 9h via LaunchAgent +
+rsync, sempre sobrescrevendo a cópia local anterior (mesmo
+comportamento do snapshot semanal da Hostinger, só que diário e fora
+da VPS). Detalhes técnicos e descoberta do bug do rsync antigo do
+macOS no CLAUDE.md.
 
 Antes disso: trocada a lista estática de 105 bairros
 na home (antes do rodapé) por um campo de busca com autocomplete
