@@ -19,10 +19,11 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO — retrofit de "resposta rápida"/schema speakable nos lotes
-3-8 (68 páginas), + link interno pendente do lote 3. Só mexendo em
-conteúdo/postmeta do WordPress via wp-cli, sem tocar em docker-compose,
-nginx, cron ou ops/.
+(livre) — última coisa feita: retrofit de "resposta rápida"/schema
+speakable nas 60 páginas dos lotes 3-8, incluindo o link interno que
+faltava no lote 3 e, de brinde, o fix do bug "-sp" nos links de todas
+essas páginas. Lotes 1-9 (82 páginas) agora estão todos no mesmo padrão.
+Ver CLAUDE.md.
 
 ## Codex
 (livre)
