@@ -19,11 +19,9 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: 11 páginas NOVAS pros bairros de Guarulhos
-(Cumbica, Bonsucesso, Centro, Macedo, Vila Augusta, Gopoúva, Parque
-Cecap, Taboão, Vila Galvão, Pimentas, Cidade Satélite), reaproveitando o
-design da página principal de Guarulhos. Lote das 113 páginas de SP
-pausado a pedido do usuário (75 restantes), ver CLAUDE.md.
+Retomando o lote 5 (mais 10 páginas) das 113 páginas de bairro duplicadas
+de São Paulo — 2026-09-08. Não vou mexer em `ops/sync-contador.sh` nem em
+nada relacionado ao PDV/contador.
 
 ## Codex
 (livre)
