@@ -19,12 +19,11 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-(livre) — última coisa feita: lote 9 (mais 4 páginas, 82/113 no total,
-lote menor por honestidade de distância — resto do bairros muito longe de
-Guarulhos ficou de fora) + técnica nova de "resposta rápida"/schema
-speakable pra buscadores de IA + llms.txt na raiz do site + 3 páginas de
-zona/cidade (São Paulo, Zona Centro-Sul, Zona Sudeste) convertidas em
-páginas-hub com diretório de links reais. Ver CLAUDE.md.
+(livre) — última coisa feita: retrofit dos lotes 1-2 (18 páginas) que
+ainda não tinham schema/FAQ/SEO-meta/links internos — agora estão no
+mesmo padrão dos lotes mais novos, incluindo "resposta rápida"/speakable.
+Também organizei a área de trabalho do Mac (script organizar_mesa.command
+já existente, só rodei de novo). Ver CLAUDE.md.
 
 ## Codex
 (livre)
