@@ -18,7 +18,7 @@ version: "3.9"
 services:
   wordpress:
     image: wordpress:php8.2-apache
-    container_name: zap_wordpress
+    container_name: gr_wordpress
     restart: unless-stopped
     ports:
       - "8081:80"
@@ -40,7 +40,7 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: zap_mysql
+    container_name: gr_mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -110,7 +110,7 @@ services:
   #
   # HTTPS=OFF: o painel/webmail (porta 80 interna) fica só em HTTP, sem TLS
   # próprio — o zap_nginx (repositório zap-agenda) é quem termina HTTPS e
-  # faz proxy_pass pra "mail:80", mesmo padrão do zap_wordpress. As portas
+  # faz proxy_pass pra "mail:80", mesmo padrão do gr_wordpress. As portas
   # de protocolo de e-mail de verdade (25/465/587/143/993/etc.) não passam
   # pelo nginx — são TCP puro, publicadas direto pro IP público da VPS.
   #
@@ -182,7 +182,11 @@ volumes:
 
 # ── Rede ─────────────────────────────────────────────────────────────
 # Mesma rede do zap-agenda — é assim que o nginx compartilhado (zap_nginx,
-# no outro repositório) consegue alcançar "zap_wordpress:80" por nome.
+# no outro repositório) consegue alcançar "gr_wordpress:80" por nome.
+# Os containers do site e do banco já se chamaram zap_wordpress/zap_mysql
+# (herança do tempo em que viviam no zap-agenda); foram renomeados em
+# 2026-09-13. Os VOLUMES continuam com o prefixo zap-agenda_ de propósito:
+# o Docker não renomeia volume sem copiar todos os dados.
 networks:
   zap_net:
     external: true

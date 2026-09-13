@@ -27,7 +27,9 @@ economia de infraestrutura, não faz parte do mesmo produto.
 ## Como isso roda na VPS
 
 Este `docker-compose.yml` sobe **apenas** o WordPress e o MySQL dele
-(`zap_wordpress`, `zap_mysql`). Ele depende de dois recursos que já existem
+(`gr_wordpress`, `gr_mysql` — até 2026-09-13 se chamavam `zap_wordpress` e
+`zap_mysql`, herança do tempo em que viviam no `zap-agenda`). Ele depende de
+dois recursos que já existem
 na VPS por terem sido criados originalmente pelo repositório `zap-agenda`
 (por isso os volumes/rede aqui são declarados como `external`, referenciando
 os nomes exatos que o Compose do zap-agenda gerou:
@@ -36,7 +38,7 @@ os nomes exatos que o Compose do zap-agenda gerou:
 
 1. **A rede Docker** `zap-agenda_zap_net` — é nela que o nginx compartilhado
    (`zap_nginx`, definido no repositório `zap-agenda`) alcança
-   `zap_wordpress:80` pelo nome do serviço.
+   `gr_wordpress:80` pelo nome do container.
 2. **O nginx compartilhado em si** — só existe um nginx expondo as portas
    80/443 na VPS (o do `zap-agenda`), então o bloco de servidor deste site
    ([nginx/grcartuchos.conf](nginx/grcartuchos.conf)) precisa ser
