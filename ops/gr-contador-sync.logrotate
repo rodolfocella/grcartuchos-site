@@ -1,0 +1,9 @@
+/var/log/gr-contador-sync.log {
+    weekly
+    rotate 8
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}

@@ -1,0 +1,2 @@
+*/10 * * * * root /root/gr-cartuchos-site/ops/sync-contador.sh >> /var/log/gr-contador-sync.log 2>&1
+

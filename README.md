@@ -93,6 +93,21 @@ As credenciais de banco usadas pelo PHP ficam exclusivamente nas variáveis
 esses valores ao legado via `getenv()`; não adicione senhas diretamente aos
 arquivos PHP nem volte a preencher `empresas.db_pass` na base matriz.
 
+### Sincronização temporária dos contadores
+
+Enquanto ainda existirem coletores antigos enviando para `sistemasrjd.com.br`
+na HostGator, [ops/sync-contador.sh](ops/sync-contador.sh) copia a tabela
+`contador` para a VPS. A cópia é incremental: só atualiza uma linha quando a
+data da HostGator é mais recente e, por isso, não rebaixa dados que um coletor
+novo já tenha enviado diretamente para `api.grcartuchos.com.br`.
+
+As credenciais da origem ficam somente em
+`/root/.config/gr-contador-sync.env` (modo `600`), com base em
+[ops/gr-contador-sync.env.example](ops/gr-contador-sync.env.example). O cron
+da VPS executa o script a cada 10 minutos e grava o resultado em
+`/var/log/gr-contador-sync.log`. Remover esse cron e o arquivo de credenciais
+quando todos os clientes tiverem recebido o coletor novo.
+
 ### Editor de arquivos pelo navegador
 
 O serviço `code-server` oferece um VS Code web com acesso gravável somente a
