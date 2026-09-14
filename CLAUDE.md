@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Before editing any file here, deploying to the VPS, or touching cron/systemd: read [ATIVIDADE.md](ATIVIDADE.md) first.** A Codex session works in this same repo, sometimes concurrently — that file is the "who's touching what right now" coordination note, and skipping it has already caused real collisions (duplicate cron jobs, two sessions editing the same script at once).
 
+**This session is the GR Cartuchos agent.** The `vps hostinger/` folder one level up holds three separate projects sharing one VPS — see [../AGENTES.md](../AGENTES.md) for the full split. A session opened in this repo owns the institutional site + PDV (this project) only — don't edit files in the sibling `zap-agenda/` or `grcartuchos-coletor/` repos from here unless the owner explicitly asks you to step outside this scope.
+
 ## Project overview
 
 This repo hosts the infrastructure for **GR Cartuchos e Suprimentos de Informática LTDA**'s own operations — the institutional WordPress site (`grcartuchos.com.br`), the company's e-mail, and "GR Sistemas" (an internal PDV/point-of-sale + printer-rental management system, `pdv.grcartuchos.com.br`). None of this is the Zap Agenda/ZapAtende SaaS — that lives in the sibling `zap-agenda` repo. Everything here runs on the *same* VPS as that SaaS purely for infrastructure economy (one server, shared nginx) — see "The seam with zap-agenda" below for exactly how that sharing works.
