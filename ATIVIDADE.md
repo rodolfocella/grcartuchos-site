@@ -19,6 +19,18 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+**EM ANDAMENTO — 2026-09-15**: ligando a loja WooCommerce (38 produtos
+publicados, checkout com Mercado Pago já funcionando) ao resto do site, a
+pedido do dono. Já criei a página `/loja/` e apontei
+`woocommerce_shop_page_id` pra ela (funciona, confirmado com curl). Agora
+vou editar o template de header sitewide (`elementor_library` post 522,
+"logo novo", widget HTML com o mega menu "HEADER GR CARTUCHOS - VERSÃO
+2026") pra adicionar um link "Loja", e embutir os produtos certos (via
+shortcode `[products category="..."]`) nas páginas de toner, recarga de
+cartucho e locação de impressoras. Só adicionando conteúdo novo, não
+reestruturando nada existente — mesmo cuidado de sempre com
+`_elementor_data` (wp_slash + --user=1, backup antes, curl depois).
+
 (livre) — 2026-09-15, continuação: **mais um bug real de UX achado pelo dono.**
 Versão em produção: `1.1.16`.
 
