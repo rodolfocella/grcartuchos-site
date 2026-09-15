@@ -19,6 +19,27 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **regra de roteamento para WhatsApp e mais
+dois fatos do negócio.** Versão em produção: `1.1.15`.
+
+- O dono pediu: cliente que já tem impressora alugada e liga com problema/
+  chamado técnico não deve ser levado ao formulário do chat — deve ir direto
+  pro WhatsApp comercial (11) 99200-6743, que é o canal de suporte de quem já
+  é cliente. Adicionei isso como regra 12 do system prompt (exceção explícita
+  à regra 10, que só manda pro formulário). Também vim a saber que o balcão da
+  loja faz impressão avulsa e vende cartucho — para essas duas coisas o
+  cliente precisa ir até a loja ou ligar no WhatsApp, então isso entrou na
+  base factual.
+- Testado ao vivo contra o endpoint `/chat` antes do commit: pergunta de
+  "já sou cliente, impressora alugada, quero abrir chamado" → respondeu
+  certo, mandou pro WhatsApp sem tentar coletar dado nenhum. Pergunta de
+  impressão avulsa/venda de cartucho → respondeu certo, mandou pra loja ou
+  pro WhatsApp. Uma terceira pergunta de controle (não-cliente querendo
+  comprar cartucho) confirmou que o fluxo normal do formulário continua
+  intacto.
+- Commit `90e0b6a`. Backup em
+  `/root/backups/siteatende-20260915T05*-claude-whatsapp-rule/`.
+
 (livre) — 2026-09-15, continuação: **dois bugs reais achados pelo dono ao
 testar, mais a base factual da loja.** Versão em produção: `1.1.14`.
 
