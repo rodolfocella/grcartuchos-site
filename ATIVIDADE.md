@@ -19,6 +19,53 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **ícone de carrinho + Minha conta
+reais no header, e achado real via GA4.** O dono liberou acesso de
+leitura do GA4 no Site Kit (precisou conceder permissão adicional pelo
+painel — acesso programático via `wp eval`/REST continua bloqueado por
+algum motivo não identificado, mas o dono consegue ver os relatórios no
+`wp-admin` normalmente e colar aqui).
+
+- Relatório real de "Conteúdo principal" (28 dias, 128 sessões) mostrou
+  **0% de taxa de "adicionar ao carrinho"** mesmo com a loja já
+  conectada e produtos com bom engajamento onde aparecem (ex:
+  `/toner-para-impressora/`: 75% engajamento, 2min26s de sessão média).
+  Causa provável: não existia ícone de carrinho nenhum no site, só um
+  link de texto "Comprar na loja" escondido num submenu.
+- Um achado inicial ("página quebrada recebendo tráfego real",
+  `/sistema/consultaimpressoras.php`) foi checado e **descartado**: só 2
+  acessos nos logs dos últimos 30 dias, ambos parecendo teste (um
+  provavelmente meu). Registrando aqui pra não reaparecer como "achado"
+  numa sessão futura sem essa checagem de novo.
+- Também identificado (não é um bug, é esperado): os números de sessão
+  curta/pouco engajamento de hoje estão contaminados pelas várias
+  limpezas de cache que fiz hoje mesmo (confirmei: a mesma página caiu
+  de 20s pra 71ms de carregamento entre duas tentativas seguidas, cache
+  frio vs quente). Recomendei esperar a métrica de páginas com saída
+  rápida se estabilizar por uns dias antes de agir em cima dela.
+- **Corrigido o achado sólido**: adicionado ícone de carrinho (contador
+  ao vivo via AJAX) + link "Minha conta" no header sitewide
+  (`elementor_library` post 522 — conteúdo de página, editado direto no
+  banco, não versionado neste repo). Colocado como bloco `.h-actions`
+  separado de `.h-side` de propósito, porque `.h-side` (onde ficam selo
+  do Google e botão de WhatsApp) é escondido inteiro abaixo de 980px —
+  colocar ali teria escondido o carrinho no celular também.
+- `wordpress/mu-plugins/gr-header-cart.php` (novo, commit `4872791`):
+  garante que o script `wc-cart-fragments` carregue em toda página (por
+  padrão só carrega perto de loja/conta) e registra o fragmento do
+  seletor `.h-cart-count` pra atualizar sozinho via AJAX. Testado com um
+  POST real em `?wc-ajax=add_to_cart`: devolveu o fragmento certo.
+- **Gotcha novo, documentado no CLAUDE.md**: `wp post meta get <id>
+  _elementor_data` (o jeito usado a sessão inteira até agora pra ler/
+  fazer backup desse tipo de conteúdo) **não devolve o valor bruto** —
+  o wp-cli normaliza/re-escapa o JSON pra exibição (achei 36238 bytes
+  via `wp post meta get`, contra 36387 bytes reais via `get_post_meta()`
+  direto em PHP). Pra edição por string-splice (a técnica segura já
+  estabelecida hoje) isso importa: usei `wp eval`/`file_put_contents`
+  pra pegar o valor cru de verdade antes de editar, não `wp post meta
+  get`. Backup de verdade em
+  `/root/backups/header-cart-20260915T1409Z/elementor_data_522.json`.
+
 (livre) — 2026-09-15, continuação: **eventos do widget de chat mandados
 pro Google Analytics.** O dono pediu pra usar o Site Kit/GA4 (já ativo,
 `G-52G3G063PQ`) pra acompanhar interação com o balão. Versão em produção:
