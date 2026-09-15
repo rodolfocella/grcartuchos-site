@@ -2,7 +2,7 @@
 /**
  * Plugin Name: siteAtende
  * Description: Widget de atendimento para sites com LLM, texto configurável e formulário de lead.
- * Version: 1.1.8
+ * Version: 1.1.14
  * Author: siteAtende
  */
 
@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SITEATENDE_VERSION', '1.1.8');
+define('SITEATENDE_VERSION', '1.1.14');
 
 function siteatende_models()
 {
@@ -52,7 +52,11 @@ function siteatende_get_default_config()
             . "Equipamentos e linhas divulgados incluem Canon, Brother, Epson e Ricoh, com opções monocromáticas, coloridas, A4 e A3.\n"
             . "Na locação, a empresa divulga instalação rápida, manutenção e suprimentos conforme o plano, contratos flexíveis e dimensionamento conforme volume e necessidade.\n"
             . "Referência pública de entrada: R$ 69 por mês mais R$ 0,05 por página; o valor final depende do equipamento, volume e projeto e deve ser confirmado pela equipe comercial.\n"
-            . "WhatsApp comercial: (11) 99200-6743.",
+            . "WhatsApp comercial: (11) 99200-6743.\n"
+            . "A loja física funciona de segunda a sexta, das 9h às 18h (fechada sábado e domingo), na Av. José Miguel Ackel, 2047, Guarulhos, telefone (11) 2486-0975. "
+            . "Lá funcionam: o suporte remoto para clientes de locação; o setor que despacha toner e insumos por motoboy; "
+            . "e o balcão de atendimento, onde são vendidos insumos (toner, cartuchos, tintas) e feita manutenção presencial "
+            . "de impressoras Epson — limpeza, retirada de ar, reset de contador e troca de almofadas.",
     );
 }
 

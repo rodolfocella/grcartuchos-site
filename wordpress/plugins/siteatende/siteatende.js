@@ -294,6 +294,34 @@ document.addEventListener('DOMContentLoaded', () => {
         border-bottom: 1px solid #e2e8f0;
       }
 
+      /* Icon-only, same footprint as #gr-chat-close, so the title next to
+         it has room to actually show instead of truncating on mobile. */
+      .gr-chat-back {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        margin-left: auto;
+        padding: 0;
+        border: 1px solid #cbd5e1;
+        border-radius: 50%;
+        background: #fff;
+        color: #0f766e;
+        font-size: 14px;
+        font-weight: 700;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .gr-chat-back:hover {
+        background: #f0fdfa;
+      }
+
+      .gr-chat-back:hover {
+        text-decoration: underline;
+      }
+
       .gr-chat-lead-logo {
         width: 24px;
         height: 24px;
@@ -304,11 +332,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       .gr-chat-lead-title {
+        flex: 1 1 auto;
+        min-width: 0;
         margin: 0;
         color: #0f172a;
         font-size: 12.5px;
         font-weight: 800;
         line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       #gr-chat-lead-form[hidden],
@@ -475,7 +508,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <form id="gr-chat-lead-form" hidden>
         <div class="gr-chat-lead-header">
           <img class="gr-chat-lead-logo" src="${escapeHtml(logoUrl)}" alt="${escapeHtml(siteName)}" />
-          <p class="gr-chat-lead-title">GR Cartuchos | Locação de Impressoras</p>
+          <p class="gr-chat-lead-title">Orçamento de locação de impressoras</p>
+          <button type="button" id="gr-chat-lead-back" class="gr-chat-back" aria-label="Voltar ao chat">←</button>
         </div>
         <input name="name" type="text" maxlength="120" placeholder="Seu nome *" required />
         <input name="company" type="text" maxlength="120" placeholder="Empresa" />
@@ -491,7 +525,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <form id="gr-chat-contact-form" hidden>
         <div class="gr-chat-lead-header">
           <img class="gr-chat-lead-logo" src="${escapeHtml(logoUrl)}" alt="${escapeHtml(siteName)}" />
-          <p class="gr-chat-lead-title">GR Cartuchos | Falar com a equipe</p>
+          <p class="gr-chat-lead-title">Falar com a equipe</p>
+          <button type="button" id="gr-chat-contact-back" class="gr-chat-back" aria-label="Voltar ao chat">←</button>
         </div>
         <input name="name" type="text" maxlength="120" placeholder="Seu nome *" required />
         <input name="company" type="text" maxlength="120" placeholder="Empresa (opcional)" />
@@ -557,11 +592,19 @@ document.addEventListener('DOMContentLoaded', () => {
     messages.scrollTop = messages.scrollHeight;
   };
 
-  const showChatForm = () => {
+  // Whichever form is open, back out to the plain chat + the two quick-
+  // action buttons — used by each form's "← Voltar" link, by a successful
+  // submit, and by closing the widget (so reopening it never leaves someone
+  // stuck on a form they can't get out of).
+  const resetToChat = () => {
     form.hidden = false;
     leadForm.hidden = true;
     contactForm.hidden = true;
     quickActions.hidden = false;
+  };
+
+  const showChatForm = () => {
+    resetToChat();
     setTimeout(() => input.focus(), 50);
   };
 
@@ -579,6 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const closeChat = () => {
     setChatOpen(false);
+    resetToChat();
   };
 
   toggle.addEventListener('click', openChat);
@@ -625,6 +669,17 @@ document.addEventListener('DOMContentLoaded', () => {
     radio.addEventListener('change', updateContactChannel);
   });
   updateContactChannel();
+
+  widget.querySelector('#gr-chat-lead-back').addEventListener('click', () => {
+    leadForm.reset();
+    showChatForm();
+  });
+
+  widget.querySelector('#gr-chat-contact-back').addEventListener('click', () => {
+    contactForm.reset();
+    updateContactChannel();
+    showChatForm();
+  });
 
   const cleanLeadValue = (value) => {
     if (value === null || value === undefined) {
