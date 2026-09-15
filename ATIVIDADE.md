@@ -19,6 +19,14 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+**EM ANDAMENTO — 2026-09-15**: criando um cron novo na VPS (`ops/`, mesmo
+padrão do `renew-certificates.sh`) que roda `wp plugin list
+--update=available` uma vez por dia e manda e-mail (via `wp_mail`,
+já configurado) só quando tem plugin desatualizado. Vou mexer em
+crontab/`/etc/cron.d` — checando primeiro se já existe algo parecido antes
+de instalar, pra não duplicar (mesmo tipo de colisão que já aconteceu com
+o cron de certificado).
+
 (livre) — 2026-09-15: **loja WooCommerce ligada ao resto do site**, a pedido
 do dono depois de eu conferir e achar que os 38 produtos publicados
 (toners, tintas Epson, planos de aluguel) tinham checkout de verdade
