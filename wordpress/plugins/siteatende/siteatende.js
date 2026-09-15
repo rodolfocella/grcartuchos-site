@@ -346,7 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       #gr-chat-lead-form[hidden],
       #gr-chat-contact-form[hidden],
-      #gr-chat-form[hidden] {
+      #gr-chat-form[hidden],
+      #gr-chat-messages[hidden] {
         display: none;
       }
 
@@ -601,6 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
     leadForm.hidden = true;
     contactForm.hidden = true;
     quickActions.hidden = false;
+    messages.hidden = false;
   };
 
   const showChatForm = () => {
@@ -634,6 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
   leadOpen.addEventListener('click', () => {
     form.hidden = true;
     quickActions.hidden = true;
+    messages.hidden = true;
     leadForm.hidden = false;
     leadForm.querySelector('input[name="name"]').focus();
   });
@@ -641,6 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
   contactOpen.addEventListener('click', () => {
     form.hidden = true;
     quickActions.hidden = true;
+    messages.hidden = true;
     contactForm.hidden = false;
     contactForm.querySelector('input[name="name"]').focus();
   });
