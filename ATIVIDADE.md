@@ -19,6 +19,27 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **a checagem diária virou atualização
+automática, filtrada por risco.** O dono pediu pra passar a atualizar de
+verdade, não só avisar. Trocado `check-plugin-updates.sh` por
+`update-plugins-safe.sh` (mesmo horário, `/etc/cron.d/gr-plugin-auto-update`):
+- Atualiza sozinho só quando é mudança de patch (major.minor da versão
+  igual, ex: 4.1.6 → 4.1.7). Qualquer salto de versão maior ou menor
+  (ex: WooCommerce 11.0.1 → 11.1.0, Elementor Pro 3.14.1 → 4.2.3) fica só
+  no e-mail — esse projeto não tem staging, então update grande direto em
+  produção é risco demais pra automatizar sem revisão.
+- Depois de atualizar, confere se a home responde 200 e avisa em destaque
+  no e-mail se não responder.
+- Testado ao vivo, de verdade, em produção (o dono topou o risco dessa
+  primeira rodada): 9 plugins atualizados com sucesso (cookie-law-info,
+  elementskit-lite, essential-addons-for-elementor-lite,
+  google-listings-and-ads, royal-elementor-addons, astra-sites,
+  templately, wordfence, insert-headers-and-footers), 4 de risco maior
+  deixados de fora (astra-addon, elementor-pro, jetpack, woocommerce),
+  site respondeu 200 antes e depois (home, `/shop/`,
+  `/toner-para-impressora/`), e-mail chegou.
+- Commit `c785a38`.
+
 (livre) — 2026-09-15: **cron diário de checagem de atualização de plugin do
 WordPress.** O dono pediu um `/loop` pra isso; expliquei que rotina na
 nuvem do Claude não alcança a VPS via SSH (só repositório git + conector
