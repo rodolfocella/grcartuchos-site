@@ -120,6 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
       }
 
+      /* #gr-chat-panel's own display:flex above is an ID rule, which
+         outranks the browser's low-specificity default [hidden]{display:
+         none} — without this, the panel ignores its hidden attribute
+         and shows open on every page load. */
+      #gr-chat-panel[hidden] {
+        display: none;
+      }
+
       #gr-chat-header {
         display: flex;
         align-items: center;
