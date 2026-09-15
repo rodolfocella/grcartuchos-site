@@ -19,6 +19,36 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **e-mail de "novo pedido" do
+WooCommerce agora avisa a Janaine.** O dono pediu que toda venda gere
+aviso por e-mail pra `janaine@grcartuchos.com.br`. O WooCommerce já tem
+esse e-mail nativo ("New order"), só que ia pro e-mail pessoal do dono
+(`rodolfocella@gmail.com`, o `admin_email` do site) — troquei o
+destinatário configurado (`woocommerce_new_order_settings['recipient']`,
+**não** a option solta `woocommerce_email_recipient_new_order`, que o
+WooCommerce não lê de verdade — essa é só um resquício/opção não usada).
+
+- **Achado real no processo**: coloquei `janaine@grcartuchos.com.br` e
+  `rodolfocella@gmail.com` juntos no mesmo campo (separado por vírgula)
+  numa primeira tentativa — e o e-mail parou de chegar pros DOIS. Causa:
+  esse servidor de e-mail (relay interno usado pelo `wp_mail()`, mesmo
+  usado pelos leads do siteatende) só entrega pra caixa hospedada aqui
+  (`@grcartuchos.com.br`) — não é um relay de saída de verdade pra
+  provedor externo tipo Gmail. Quando um destinatário externo está no
+  mesmo envio que um interno, a rejeição do externo derruba o e-mail
+  inteiro, os dois ficam sem receber. Corrigido deixando só
+  `janaine@grcartuchos.com.br` no campo.
+- Testado de ponta a ponta 4 vezes com pedido real (criado e depois
+  apagado via `wc_create_order()`/`WC_Order::delete(true)`, todos
+  marcados "TESTE" no nome): a versão final entregou de verdade — achei
+  os 2 e-mails de teste na pasta `cur/` do Maildir da Janaine (não
+  `new/` — o cliente de e-mail dela deve estar sincronizando na hora).
+  Marcados como teste, ela pode apagar.
+- **Vale saber pra qualquer notificação futura por e-mail nesse site**:
+  esse relay não alcança e-mail externo (Gmail, Outlook, etc.) — só
+  endereços `@grcartuchos.com.br`. Um destinatário externo misturado
+  com um interno no mesmo envio derruba os dois.
+
 (livre) — 2026-09-15, continuação: **ícone de carrinho + Minha conta
 reais no header, e achado real via GA4.** O dono liberou acesso de
 leitura do GA4 no Site Kit (precisou conceder permissão adicional pelo
