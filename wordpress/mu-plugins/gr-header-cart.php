@@ -1,11 +1,12 @@
 <?php
 /**
- * O header sitewide (elementor_library post 522) ganhou um ícone de
- * carrinho + "Minha conta" reais -- antes não existia nenhum ícone de
- * carrinho de verdade, só um link de texto "Comprar na loja" escondido
- * num submenu, e o GA4 confirmou que ninguém estava adicionando produto
- * ao carrinho (0% de 128 sessões). Esse mu-plugin faz o contador do
- * carrinho (".h-cart-count", no header) funcionar de verdade:
+ * O header sitewide (elementor_library post 522) ganhou "Minha conta" e
+ * "Carrinho" como itens reais do menu principal -- antes não existia
+ * nenhum ícone de carrinho de verdade, só um link de texto "Comprar na
+ * loja" escondido num submenu, e o GA4 confirmou que ninguém estava
+ * adicionando produto ao carrinho (0% de 128 sessões). Esse mu-plugin
+ * faz o contador do carrinho (".h-cart-count", dentro do item "Carrinho"
+ * do menu) funcionar de verdade:
  *
  * 1. Garante que o wc-cart-fragments carregue em toda página -- por
  *    padrão o WooCommerce só carrega ele perto de página de loja/conta,
