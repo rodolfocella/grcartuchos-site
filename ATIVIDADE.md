@@ -43,18 +43,39 @@ algum motivo não identificado, mas o dono consegue ver os relatórios no
   de 20s pra 71ms de carregamento entre duas tentativas seguidas, cache
   frio vs quente). Recomendei esperar a métrica de páginas com saída
   rápida se estabilizar por uns dias antes de agir em cima dela.
-- **Corrigido o achado sólido**: adicionado ícone de carrinho (contador
-  ao vivo via AJAX) + link "Minha conta" no header sitewide
+- **Corrigido o achado sólido**: adicionado link "Carrinho" (com
+  contador ao vivo via AJAX) + "Minha conta" no header sitewide
   (`elementor_library` post 522 — conteúdo de página, editado direto no
-  banco, não versionado neste repo). Colocado como bloco `.h-actions`
-  separado de `.h-side` de propósito, porque `.h-side` (onde ficam selo
-  do Google e botão de WhatsApp) é escondido inteiro abaixo de 980px —
-  colocar ali teria escondido o carrinho no celular também.
-- `wordpress/mu-plugins/gr-header-cart.php` (novo, commit `4872791`):
-  garante que o script `wc-cart-fragments` carregue em toda página (por
-  padrão só carrega perto de loja/conta) e registra o fragmento do
-  seletor `.h-cart-count` pra atualizar sozinho via AJAX. Testado com um
-  POST real em `?wc-ajax=add_to_cart`: devolveu o fragmento certo.
+  banco, não versionado neste repo). Primeira versão colocou os dois
+  como um bloco `.h-actions` separado (pra não ficarem escondidos no
+  celular, já que `.h-side`, onde ficam selo do Google e botão de
+  WhatsApp, some inteiro abaixo de 980px); o dono pediu pra ficarem
+  dentro do próprio menu principal em vez disso, e a versão final é
+  assim: dois `<li>` novos no final do `<ul>` do menu, com a mesma
+  classe `.h-link` de todo link do menu — mais simples e resolve o
+  problema do celular de graça, já que a gaveta mobile já mostra todo
+  `.h-link` normalmente.
+- **Incidente real no meio do caminho, causado por mim**: a primeira
+  tentativa salvou o header via `wp eval-file` sem `--user=1`, e o
+  WordPress descartou a tag `<style>` inteira do conteúdo salvo (mesmo
+  bug já documentado no CLAUDE.md horas antes, por mim mesmo, numa
+  sessão anterior no mesmo dia — só não apliquei o próprio aviso dessa
+  vez). Resultado: CSS e comentário interno do header apareceram como
+  texto puro pro dono, visível em produção (ele mandou print). Corrigido
+  em duas etapas: (1) restaurado o backup pré-edição com `--user=1` +
+  `wp_set_current_user(1)` de verdade, confirmando `<style>` intacto
+  antes de seguir; (2) refeita a adição do carrinho/conta do jeito
+  pedido (menu, não bloco separado), com a mesma autenticação e uma
+  verificação explícita pós-save (tag `<style>` e os dois links
+  presentes) antes de considerar concluído. Backup do estado limpo em
+  `/root/backups/header-cart-20260915T1409Z/elementor_data_522.json`.
+- `wordpress/mu-plugins/gr-header-cart.php` (novo, commit `4872791`,
+  comentário atualizado no commit seguinte pra refletir a posição final
+  como itens de menu): garante que o script `wc-cart-fragments` carregue
+  em toda página (por padrão só carrega perto de loja/conta) e registra
+  o fragmento do seletor `.h-cart-count` pra atualizar sozinho via AJAX.
+  Testado com um POST real em `?wc-ajax=add_to_cart` (duas vezes, antes
+  e depois da mudança de layout): devolveu o fragmento certo nas duas.
 - **Gotcha novo, documentado no CLAUDE.md**: `wp post meta get <id>
   _elementor_data` (o jeito usado a sessão inteira até agora pra ler/
   fazer backup desse tipo de conteúdo) **não devolve o valor bruto** —
