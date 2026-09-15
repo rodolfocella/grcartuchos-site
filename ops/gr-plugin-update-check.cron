@@ -1,0 +1,1 @@
+0 11 * * * root /root/gr-cartuchos-site/ops/check-plugin-updates.sh >> /var/log/gr-plugin-update-check.log 2>&1
