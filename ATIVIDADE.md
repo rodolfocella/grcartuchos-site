@@ -19,13 +19,26 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-**EM ANDAMENTO — 2026-09-15**: criando um cron novo na VPS (`ops/`, mesmo
-padrão do `renew-certificates.sh`) que roda `wp plugin list
---update=available` uma vez por dia e manda e-mail (via `wp_mail`,
-já configurado) só quando tem plugin desatualizado. Vou mexer em
-crontab/`/etc/cron.d` — checando primeiro se já existe algo parecido antes
-de instalar, pra não duplicar (mesmo tipo de colisão que já aconteceu com
-o cron de certificado).
+(livre) — 2026-09-15: **cron diário de checagem de atualização de plugin do
+WordPress.** O dono pediu um `/loop` pra isso; expliquei que rotina na
+nuvem do Claude não alcança a VPS via SSH (só repositório git + conector
+do claude.ai), então virou um cron de verdade na VPS em vez de qualquer
+coisa ligada a sessão de IA — mais confiável e não depende de nenhuma
+sessão ficar aberta.
+
+- `ops/check-plugin-updates.sh` roda `wp plugin list --update=available`
+  dentro do `gr_wordpress` e só manda e-mail (via `wp_mail`, mesmo relay
+  SMTP dos leads do siteatende) quando tem algo pendente — não aplica
+  nada sozinho. Instalado em `/etc/cron.d/gr-plugin-update-check`, `0 11
+  * * *` (08h São Paulo). Confirmei que não existia nada parecido antes de
+  instalar (checei `/etc/cron.d/` e `crontab -l` primeiro).
+- Testado manualmente antes de instalar o cron: achou 13 plugins
+  desatualizados agora mesmo (astra-addon, elementor-pro, jetpack,
+  woocommerce, wordfence, etc.) e o e-mail chegou de verdade — confirmei
+  olhando o arquivo novo no Maildir do `gr_mail`, não só o retorno de
+  `wp_mail()` (o `docker logs gr_mail` não mostra esse tipo de entrega,
+  não é confiável pra esse tipo de checagem).
+- Commit `1cd73a1`.
 
 (livre) — 2026-09-15: **loja WooCommerce ligada ao resto do site**, a pedido
 do dono depois de eu conferir e achar que os 38 produtos publicados
