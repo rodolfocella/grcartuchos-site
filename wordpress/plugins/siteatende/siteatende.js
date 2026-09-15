@@ -415,15 +415,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.body.appendChild(widget);
 
-  const panel = document.getElementById('gr-chat-panel');
-  const toggle = document.getElementById('gr-chat-toggle');
-  const greeting = document.getElementById('gr-chat-greeting');
-  const closeButton = document.getElementById('gr-chat-close');
-  const form = document.getElementById('gr-chat-form');
-  const leadOpen = document.getElementById('gr-chat-lead-open');
-  const leadForm = document.getElementById('gr-chat-lead-form');
-  const input = document.getElementById('gr-chat-input');
-  const messages = document.getElementById('gr-chat-messages');
+  const panel = widget.querySelector('#gr-chat-panel');
+  const toggle = widget.querySelector('#gr-chat-toggle');
+  const greeting = widget.querySelector('#gr-chat-greeting');
+  const closeButton = widget.querySelector('#gr-chat-close');
+  const form = widget.querySelector('#gr-chat-form');
+  const leadOpen = widget.querySelector('#gr-chat-lead-open');
+  const leadForm = widget.querySelector('#gr-chat-lead-form');
+  const input = widget.querySelector('#gr-chat-input');
+  const messages = widget.querySelector('#gr-chat-messages');
   const conversationHistory = [];
 
   const appendMessage = (text, type) => {
@@ -441,21 +441,25 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => input.focus(), 50);
   };
 
+  const setChatOpen = (isOpen) => {
+    panel.hidden = !isOpen;
+    toggle.hidden = isOpen;
+    greeting.hidden = isOpen;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  };
+
   const openChat = () => {
-    panel.hidden = false;
-    toggle.hidden = true;
-    greeting.hidden = true;
+    setChatOpen(true);
     setTimeout(() => input.focus(), 50);
   };
 
   const closeChat = () => {
-    panel.hidden = true;
-    toggle.hidden = false;
-    greeting.hidden = false;
+    setChatOpen(false);
   };
 
   toggle.addEventListener('click', openChat);
   closeButton.addEventListener('click', closeChat);
+  setChatOpen(false);
 
   appendMessage(introMessage, 'bot');
 
