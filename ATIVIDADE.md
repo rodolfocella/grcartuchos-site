@@ -19,6 +19,27 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **eventos do widget de chat mandados
+pro Google Analytics.** O dono pediu pra usar o Site Kit/GA4 (já ativo,
+`G-52G3G063PQ`) pra acompanhar interação com o balão. Versão em produção:
+`1.1.17`.
+
+- `chat_widget_open` (abriu o balão), `chat_form_started` (abriu
+  formulário de orçamento ou contato) e `chat_message_sent` (mandou a
+  primeira mensagem, uma vez por sessão) — engajamento, não conversão.
+- `generate_lead` (nome recomendado do GA4) só no envio bem-sucedido de
+  cada formulário, com `lead_type` diferenciando orçamento de contato —
+  esse sim é o evento de conversão real. Decidido não marcar toda
+  interação como "lead" (inflaria/mentiria a métrica) — separei
+  engajamento de conversão de propósito.
+- `trackEvent()` só chama `gtag` se ele existir, pra não quebrar o widget
+  se um bloqueador de anúncio remover o Analytics.
+- Ainda falta (não fiz, é passo manual no painel do GA4): marcar
+  `generate_lead` como "evento-chave"/conversão no Admin do GA4, pra
+  aparecer nos relatórios de conversão. Avisar o dono.
+- Commit `a362223`. Backup em
+  `/root/backups/siteatende-20260915T13*-claude-ga4/`.
+
 (livre) — 2026-09-15, continuação: **a checagem diária virou atualização
 automática, filtrada por risco.** O dono pediu pra passar a atualizar de
 verdade, não só avisar. Trocado `check-plugin-updates.sh` por
