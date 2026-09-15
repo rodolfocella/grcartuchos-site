@@ -19,6 +19,24 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **dois bugs reais achados pelo dono ao
+testar, mais a base factual da loja.** Versão em produção: `1.1.14`.
+
+- Ao abrir qualquer formulário (orçamento ou o novo de contato), não tinha
+  como voltar pro chat — nem "Voltar", nem fechar e reabrir o balão. Agora
+  os dois formulários têm um "←" no cabeçalho, e fechar o balão também
+  volta pro chat sozinho.
+- Testei o agente com perguntas reais de cliente: acertou serviços, marcas,
+  preço (como referência), recusou marca/serviço que não fazem (sem
+  inventar) — só achei que ele "chutou" os dias da semana da loja quando
+  perguntado. O dono confirmou os dias e adicionei à base factual, junto
+  com horário (seg-sex, 9h-18h), endereço, telefone fixo e o que funciona
+  na loja física (suporte remoto, despacho por motoboy, balcão com venda
+  de insumos e manutenção presencial Epson). Testado de novo depois: o
+  agente parou de inventar e passou a responder certo.
+- Commit `d19f8a7`. Backups em
+  `/root/backups/siteatende-20260915T051*-claude-*`.
+
 (livre) — 2026-09-15: **segundo fluxo "Falar com um atendente" no
 `siteatende`, mais um bug real corrigido no processo.** Versão em
 produção: `1.1.8`.
