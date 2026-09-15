@@ -2,7 +2,7 @@
 /**
  * Plugin Name: siteAtende
  * Description: Widget de atendimento para sites com LLM, texto configurável e formulário de lead.
- * Version: 1.1.16
+ * Version: 1.1.17
  * Author: siteAtende
  */
 
@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SITEATENDE_VERSION', '1.1.16');
+define('SITEATENDE_VERSION', '1.1.17');
 
 function siteatende_models()
 {

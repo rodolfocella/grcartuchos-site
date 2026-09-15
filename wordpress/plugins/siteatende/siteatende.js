@@ -617,9 +617,21 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.setAttribute('aria-expanded', String(isOpen));
   };
 
+  // Manda evento pro Google Analytics (via gtag, já carregado pelo Site
+  // Kit) só se ele realmente existir na página — nunca deixa o widget
+  // quebrar por causa disso (ex: bloqueador de anúncio removendo o gtag).
+  const trackEvent = (name, params) => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, params || {});
+    }
+  };
+
+  let chatEngagementTracked = false;
+
   const openChat = () => {
     setChatOpen(true);
     setTimeout(() => input.focus(), 50);
+    trackEvent('chat_widget_open', { widget_name: 'gr_chat' });
   };
 
   const closeChat = () => {
@@ -639,6 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
     messages.hidden = true;
     leadForm.hidden = false;
     leadForm.querySelector('input[name="name"]').focus();
+    trackEvent('chat_form_started', { form_type: 'orcamento_locacao' });
   });
 
   contactOpen.addEventListener('click', () => {
@@ -647,6 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
     messages.hidden = true;
     contactForm.hidden = false;
     contactForm.querySelector('input[name="name"]').focus();
+    trackEvent('chat_form_started', { form_type: 'contato' });
   });
 
   // The contact form asks for phone, e-mail or a best-time-to-call depending
@@ -719,6 +733,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       appendMessage(successMessage, 'bot');
+      trackEvent('generate_lead', { lead_type: 'orcamento_locacao' });
       leadForm.reset();
       leadForm.hidden = true;
       showChatForm();
@@ -753,6 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       appendMessage(data.message || successMessage, 'bot');
+      trackEvent('generate_lead', { lead_type: 'contato' });
       contactForm.reset();
       updateContactChannel();
       contactForm.hidden = true;
@@ -774,6 +790,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     appendMessage(value, 'user');
+    if (!chatEngagementTracked) {
+      chatEngagementTracked = true;
+      trackEvent('chat_message_sent', { widget_name: 'gr_chat' });
+    }
     const requestHistory = conversationHistory.slice(-8);
     conversationHistory.push({ role: 'user', content: value });
     input.value = '';
