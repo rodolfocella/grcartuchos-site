@@ -19,6 +19,21 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15, continuação: **mais um bug real de UX achado pelo dono.**
+Versão em produção: `1.1.16`.
+
+- Print real (não cache antigo — confirmei checando o JS ao vivo antes de
+  mexer) mostrando: depois de já ter trocado mensagens no chat e clicar em
+  "Quero um orçamento de locação", o histórico de conversa continuava
+  visível ocupando quase todo o painel, e o formulário (título "Orçament...")
+  ficava espremido lá embaixo, só dando pra ver o campo "Seu nome". Causa:
+  `#gr-chat-messages` nunca era escondido ao abrir um formulário, só
+  `quickActions`. Corrigido: `leadOpen`/`contactOpen` agora escondem as
+  mensagens também, e `resetToChat()` (botão voltar, envio com sucesso,
+  fechar o balão) volta a mostrá-las.
+- Commit `1113ff2`. Backup em
+  `/root/backups/siteatende-20260915T0551Z-claude-hide-messages/`.
+
 (livre) — 2026-09-15, continuação: **regra de roteamento para WhatsApp e mais
 dois fatos do negócio.** Versão em produção: `1.1.15`.
 
