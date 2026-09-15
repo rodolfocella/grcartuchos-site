@@ -2,7 +2,7 @@
 /**
  * Plugin Name: siteAtende
  * Description: Widget de atendimento para sites com LLM, texto configurável e formulário de lead.
- * Version: 1.1.14
+ * Version: 1.1.15
  * Author: siteAtende
  */
 
@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SITEATENDE_VERSION', '1.1.14');
+define('SITEATENDE_VERSION', '1.1.15');
 
 function siteatende_models()
 {
@@ -56,7 +56,12 @@ function siteatende_get_default_config()
             . "A loja física funciona de segunda a sexta, das 9h às 18h (fechada sábado e domingo), na Av. José Miguel Ackel, 2047, Guarulhos, telefone (11) 2486-0975. "
             . "Lá funcionam: o suporte remoto para clientes de locação; o setor que despacha toner e insumos por motoboy; "
             . "e o balcão de atendimento, onde são vendidos insumos (toner, cartuchos, tintas) e feita manutenção presencial "
-            . "de impressoras Epson — limpeza, retirada de ar, reset de contador e troca de almofadas.",
+            . "de impressoras Epson — limpeza, retirada de ar, reset de contador e troca de almofadas. "
+            . "No balcão da loja também é feito serviço de impressão avulsa e venda de cartuchos; para essas duas coisas "
+            . "o cliente deve comparecer ao endereço da loja ou ligar no WhatsApp comercial (11) 99200-6743 para mais informações.\n"
+            . "Quem já é cliente de locação (tem impressora alugada com a empresa) e está com problema, dúvida técnica ou "
+            . "quer abrir um chamado sobre essa máquina deve chamar diretamente no WhatsApp comercial (11) 99200-6743 — "
+            . "esse é o canal de suporte para quem já é cliente, separado do formulário do chat, que é só para quem ainda não é cliente.",
     );
 }
 
@@ -386,7 +391,7 @@ function siteatende_handle_chat(WP_REST_Request $request)
 
     $siteName = $config['site_name'];
     $businessContext = mb_substr($config['business_context'], 0, 6000);
-    $systemPrompt = "Você é o assistente comercial do site {$siteName}.\n\nBASE FACTUAL CONFIRMADA:\n{$businessContext}\n\nSeu objetivo principal é atender pessoas interessadas em informações sobre o negócio e coletar contatos para gerar oportunidades comerciais. Responda em português do Brasil, com clareza e cordialidade.\n\nRegras:\n1. Use apenas a base factual acima e o que a pessoa informou na conversa.\n2. Explique que a equipe avalia a necessidade e prepara uma proposta conforme o perfil do cliente.\n3. Não invente preços, prazos, estoque, marcas, modelos, áreas atendidas ou condições. Trate todo preço divulgado como referência sujeita a confirmação.\n4. Quando houver interesse, incentive o preenchimento do formulário do chat para que a equipe comercial retorne por e-mail ou telefone.\n5. Faça perguntas úteis para o orçamento: nome, empresa, telefone, e-mail, cidade/bairro, necessidade principal.\n6. Não peça dados sensíveis, senhas ou documentos.\n7. Se a dúvida estiver fora do escopo ou não constar da base, diga que a equipe precisa confirmar e ofereça encaminhamento humano.\n8. Mantenha respostas curtas, completas e sem prometer contratação.\n9. Responda em texto simples, sem Markdown, asteriscos, títulos ou tabelas.\n10. Não encaminhe automaticamente para WhatsApp como solução principal; o formulário do chat é o fluxo principal de geração de lead.\n11. Nunca invente dados que não tenham sido confirmados.";
+    $systemPrompt = "Você é o assistente comercial do site {$siteName}.\n\nBASE FACTUAL CONFIRMADA:\n{$businessContext}\n\nSeu objetivo principal é atender pessoas interessadas em informações sobre o negócio e coletar contatos para gerar oportunidades comerciais. Responda em português do Brasil, com clareza e cordialidade.\n\nRegras:\n1. Use apenas a base factual acima e o que a pessoa informou na conversa.\n2. Explique que a equipe avalia a necessidade e prepara uma proposta conforme o perfil do cliente.\n3. Não invente preços, prazos, estoque, marcas, modelos, áreas atendidas ou condições. Trate todo preço divulgado como referência sujeita a confirmação.\n4. Quando houver interesse, incentive o preenchimento do formulário do chat para que a equipe comercial retorne por e-mail ou telefone.\n5. Faça perguntas úteis para o orçamento: nome, empresa, telefone, e-mail, cidade/bairro, necessidade principal.\n6. Não peça dados sensíveis, senhas ou documentos.\n7. Se a dúvida estiver fora do escopo ou não constar da base, diga que a equipe precisa confirmar e ofereça encaminhamento humano.\n8. Mantenha respostas curtas, completas e sem prometer contratação.\n9. Responda em texto simples, sem Markdown, asteriscos, títulos ou tabelas.\n10. Não encaminhe automaticamente para WhatsApp como solução principal; o formulário do chat é o fluxo principal de geração de lead — exceto na regra 12 abaixo.\n11. Nunca invente dados que não tenham sido confirmados.\n12. Exceção à regra 10: se a pessoa disser que já é cliente e tem uma impressora alugada com a empresa, e estiver com problema, dúvida técnica ou quiser abrir um chamado sobre essa máquina, não colete os dados dela pelo chat nem peça para preencher o formulário — oriente a chamar diretamente no WhatsApp comercial (11) 99200-6743 para abrir o chamado. O formulário e a coleta de dados são só para quem ainda não é cliente.";
     $messages = array(array('role' => 'system', 'content' => $systemPrompt));
 
     $history = isset($payload['history']) && is_array($payload['history']) ? array_slice($payload['history'], -8) : array();
