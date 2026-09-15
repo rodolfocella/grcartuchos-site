@@ -19,17 +19,50 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-**EM ANDAMENTO — 2026-09-15**: ligando a loja WooCommerce (38 produtos
-publicados, checkout com Mercado Pago já funcionando) ao resto do site, a
-pedido do dono. Já criei a página `/loja/` e apontei
-`woocommerce_shop_page_id` pra ela (funciona, confirmado com curl). Agora
-vou editar o template de header sitewide (`elementor_library` post 522,
-"logo novo", widget HTML com o mega menu "HEADER GR CARTUCHOS - VERSÃO
-2026") pra adicionar um link "Loja", e embutir os produtos certos (via
-shortcode `[products category="..."]`) nas páginas de toner, recarga de
-cartucho e locação de impressoras. Só adicionando conteúdo novo, não
-reestruturando nada existente — mesmo cuidado de sempre com
-`_elementor_data` (wp_slash + --user=1, backup antes, curl depois).
+(livre) — 2026-09-15: **loja WooCommerce ligada ao resto do site**, a pedido
+do dono depois de eu conferir e achar que os 38 produtos publicados
+(toners, tintas Epson, planos de aluguel) tinham checkout de verdade
+funcionando (Mercado Pago: Pix, cartão, boleto) mas nenhuma forma de um
+visitante chegar neles navegando — sem página de loja configurada, sem
+link em menu nenhum.
+
+- Achado importante logo de cara: o header do site (não é um menu WP
+  normal — é um mega menu inteiro escrito à mão num widget HTML do
+  template sitewide `elementor_library` post 522, "logo novo", comentário
+  interno chamado "HEADER GR CARTUCHOS - VERSÃO 2026") **já tinha um link
+  "Comprar na loja" apontando pra `/shop/`**, e até links diretos pra 2
+  produtos específicos — só que `/shop/` nunca existiu. Em vez de editar
+  esse mega menu (grande, feito por outra sessão, risco maior), criei a
+  página em `/shop/` (mesmo slug que o link já esperava) e apontei
+  `woocommerce_shop_page_id` pra ela — o link que já existia passou a
+  funcionar sem tocar no header.
+- Embutido `[products category="..."]` como uma seção nova (só acrescentada,
+  nada reestruturado) nas 3 páginas de conteúdo relacionado: toner (26
+  produtos), recarga de cartucho → tinta Epson (10 produtos), locação de
+  impressoras → os 2 planos de aluguel.
+- **Dois bugs reais achados e corrigidos no processo, os dois relevantes pra
+  qualquer edição futura de `_elementor_data` neste site:**
+  1. Meu primeiro método (decodificar o `_elementor_data` inteiro com
+     `json_decode(..., true)` e regravar com `wp_json_encode()`) corrompeu
+     silenciosamente TODO `{}` (objeto vazio) da página inteira pra `[]`
+     (lista vazia) — PHP não distingue as duas coisas depois de decodificar
+     como array associativo. O Elementor descarta em silêncio qualquer
+     elemento cujo `settings` vire lista em vez de objeto. Troquei pra uma
+     técnica de "colar string": nunca decodificar o documento inteiro, só
+     achar o `]` final e inserir `,<novo elemento>` antes dele — preserva
+     byte a byte tudo que já existia.
+  2. Mesmo com o dado certo salvo, o conteúdo novo não aparecia ao vivo —
+     nem limpando o WP Rocket (`rocket_clean_domain()`). Causa: o Elementor
+     mantém um cache próprio de renderização/CSS, separado do WP Rocket, que
+     só `\Elementor\Plugin::$instance->files_manager->clear_cache()` limpa.
+     Necessário rodar os dois depois de qualquer escrita direta em
+     `_elementor_data` por fora do editor.
+- Verificado ao vivo com fetch/curl (não screenshot): grade de produtos de
+  verdade renderizando (preço, botão comprar) nas 3 páginas + `/shop/`,
+  nenhum shortcode aparecendo como texto literal, título e tamanho de cada
+  página consistentes com conteúdo antigo intacto.
+- Backups das 3 páginas antes da edição (dado original, sem corrupção) em
+  `/root/backups/woocommerce-embed-20260915T1132Z/`.
 
 (livre) — 2026-09-15, continuação: **mais um bug real de UX achado pelo dono.**
 Versão em produção: `1.1.16`.
