@@ -14,6 +14,48 @@ Origin: all of this used to run on shared HostGator hosting (cPanel account `sis
 
 **GR Sistemas is not a multi-tenant SaaS in practice** — despite the login screen literally saying "PAINEL DE CONTROLE SaaS" and the database schema supporting multiple client databases (`sistem84_cliente01`-`07`, `sistem84_grsistemas_parceiro1`), those extra databases are the owner's own old test data, never sold to a real third party. Only `sistem84_impressoras` (the GR Cartuchos business itself) and `sistem84_matriz` (its tenant-registry/auth database) are real and migrated here. Confirmed directly by the business owner — don't assume otherwise from the schema alone.
 
+## Current production implementation: siteAtende agent
+
+This repo's current live implementation for the institutional WordPress site is a reusable WordPress plugin named `siteatende`, not a one-off MU plugin. The active files are:
+
+- `wordpress/plugins/siteatende/siteatende.php`
+- `wordpress/plugins/siteatende/siteatende.js`
+
+What was built and validated in this session:
+
+- Reused the proven Atende Zap/Zap Agenda sales-agent pattern but scoped to GR Cartuchos and the institutional site (`grcartuchos.com.br`).
+- Kept the floating chat widget style aligned with the Atende Zap bubble, but swapped the branding to the GR Cartuchos logo and the site-specific name/visual identity.
+- Added a WordPress admin config panel so the plugin can select/provider/model and keep the behavior reusable across other sites in the future.
+- Supported LLM providers: Groq, OpenAI and Gemini; the live production default validated here is Groq with `openai/gpt-oss-20b`.
+- Built the lead-qualification flow to collect printer-rental interest and send it to `janaine@grcartuchos.com.br` via WordPress mail (`wp_mail`, with the server's configured SMTP relay).
+- Fixed the UX bug where the regular chat form remained visible while the lead form was active: the chat form is hidden during lead capture, only the lead-submit action remains visible, and after success the user sees a confirmation message and returns to the chat flow.
+- Deactivated the conflicting WhatsApp plugin/assistant bubble that was duplicating the interaction.
+- Activated the normal plugin version in the live WordPress installation and validated the widget is rendered on the site.
+
+Operational notes:
+
+- The plugin keeps a generic config layer (`siteatende_get_default_config`, `siteatende_get_config`, and corresponding admin fields) so it can be reused with different site names, colors and texts without hardcoding a single domain.
+- Environment variables used by the site are stored in the repo `.env`/WordPress config shape for the LLM keys and the lead-recipient email, rather than hardcoded in the PHP file.
+- The live validation in production confirmed the widget toggle and panel are present on the site with the GR Cartuchos logo loaded.
+
+This is the current working baseline for the GR Cartuchos agent and should stay scoped to this repo unless the owner explicitly asks to generalize the same plugin to a different domain.
+
+### Latest siteAtende mobile fix (2026-09-14)
+
+The lead form was refined in production after mobile vertical testing showed it becoming too tall and overlapping the site's header/menu. The current widget behavior is:
+
+- On mobile, the chat panel is independently `position: fixed`, rather than growing inside the floating-button container.
+- The panel is anchored above the bottom navigation area (`bottom: calc(84px + env(safe-area-inset-bottom))`) and has a maximum height of 440px, with internal scrolling for the lead fields.
+- The widget uses a high `z-index` (`2147483647`) so it remains visible above the site's navigation layers.
+- Optional lead fields use two columns on small screens; name, e-mail, phone, notes and submit remain full width.
+- The header with GR Cartuchos logo and assistant name remains visible when the form opens.
+
+The live asset version is `1.1.5`. Real-browser validation at a 390x568 vertical viewport confirmed the panel starts at approximately 96px, the chat header is visible from approximately 97px to 148px, and the panel ends at approximately 484px. The deployed PHP passed `php -l` with no syntax errors. WP Rocket combines the plugin JavaScript, so every widget deploy must call `rocket_clean_domain()` or visitors may keep receiving an older mobile layout.
+
+Version 1.1.5 also adds an editable **Base factual do negócio** to the WordPress settings page and sends up to the last eight chat messages to the selected provider. This fixed generic, context-free answers: the live Groq smoke test now correctly mentions printer rental/outsourcing, maintenance, supplies and technical support, and treats `R$ 69/mês + R$ 0,05/página` only as a public reference subject to a commercial proposal. Replies are explicitly plain text so Markdown markers do not leak into the widget.
+
+The anonymous REST routes now cap field/message sizes, escape configurable strings before inserting them into widget HTML, use a honeypot for lead spam, limit chat to 15 requests/minute per client and leads to 5/15 minutes per client plus 30/hour globally. Production currently has **Groq configured** (`openai/gpt-oss-20b`); OpenAI and Gemini remain selectable implementations but their server keys are absent, and the settings page says so without exposing values. Leads continue to go to `janaine@grcartuchos.com.br`.
+
 ## The seam with zap-agenda
 
 This repo's `docker-compose.yml` depends on Docker resources that were originally created by the *other* repo's Compose project (back when this content briefly lived inside `zap-agenda/docker-compose.yml` before being split out) — that's why several resources are declared `external: true` with an explicit `zap-agenda_`-prefixed name instead of being created fresh:

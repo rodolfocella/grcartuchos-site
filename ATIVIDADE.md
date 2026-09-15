@@ -19,6 +19,8 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — tela administrativa adicionada ao plugin do assistente da GR Cartuchos para selecionar o provedor LLM e o modelo correspondente; o endpoint usa a configuração salva sem editar código. Padrão validado: Groq + `openai/gpt-oss-20b`. Também corrigido o fallback do chat causado por um header `X-WP-Nonce` vazio que gerava HTTP 403 no navegador. Leads agora são enviados para `janaine@grcartuchos.com.br`; remetente técnico permanece `rodolfo@grcartuchos.com.br`.
+
 (livre) — última coisa feita: backup diário completo da VPS ficou
 pronto e testado ponta a ponta, mas por pedido do dono o agendamento
 automático foi DESATIVADO no mesmo dia (removido o cron na VPS e
@@ -71,4 +73,14 @@ o dono resolver (adicionar swap é a correção mais simples). Ver seção
 Ver CLAUDE.md.
 
 ## Codex
-(livre)
+(livre) — 2026-09-14: retomada do `siteatende` concluída e publicada como
+versão `1.1.5`. O plugin normal foi consolidado no repositório; recebeu base
+factual editável, memória das oito últimas mensagens, respostas sem Markdown,
+limites de tamanho/frequência, honeypot e escape das configurações exibidas.
+Groq + `openai/gpt-oss-20b` foi validado em produção com perguntas sobre
+serviços e preço; OpenAI e Gemini continuam implementados, mas estão sem chave
+no servidor e isso agora aparece no painel sem revelar valores. Layout do chat
+e formulário conferido em 1440×900 e 390×568 após limpar o cache do WP Rocket.
+Backups para rollback: `/root/backups/siteatende-20260914-codex-{113,114,115}`.
+Somente arquivos do plugin da GR foram publicados; nenhum container, banco,
+nginx, PDV, coletor ou serviço do Atende Zap Brasil foi alterado.
