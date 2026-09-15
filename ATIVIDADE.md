@@ -19,6 +19,37 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-15: **segundo fluxo "Falar com um atendente" no
+`siteatende`, mais um bug real corrigido no processo.** Versão em
+produção: `1.1.8`.
+
+- Novo botão, separado do "Quero um orçamento de locação" (que continua
+  idêntico). Pergunta o canal preferido — WhatsApp, e-mail ou ligação — e
+  só mostra/exige o campo daquele canal (telefone, e-mail, ou telefone +
+  melhor horário). Mesmo endpoint (`POST /lead`, campo `type`), mesmo
+  destino `janaine@grcartuchos.com.br`, mesmo limite de tentativas e
+  honeypot do formulário de orçamento. Testado ao vivo pelos 3 canais e
+  confirmado: o e-mail de teste chegou de verdade na caixa da Janaine
+  (`lmtp(janaine@grcartuchos.com.br): stored mail into mailbox 'INBOX'`
+  no log do `gr_mail`, às 01:57 UTC) — pode apagar, está marcado como
+  TESTE.
+- **Bug real e já existente antes de eu mexer** (confirmado por captura de
+  tela do site como estava, e por print que o dono mandou do celular): o
+  balão do chat abria sozinho, por cima do conteúdo, em toda visita, e o
+  X não fechava de verdade. Causa: `#gr-chat-panel { display:flex }` é
+  uma regra por ID que vence a regra padrão do navegador para o atributo
+  `hidden` — então esconder o painel nunca teve efeito visual algum, só
+  no atributo. Corrigido com `#gr-chat-panel[hidden] { display:none }`,
+  mesmo padrão já usado nos outros elementos do widget. Confirmado ao
+  vivo: fechado por padrão, e o X fecha de verdade.
+- Commits: `c3b7562` (1.1.6 da Codex, só posto no git agora),
+  `43ca840` (o novo fluxo), `64b2520` (a correção do painel). Backups em
+  `/root/backups/siteatende-20260915T0455Z-claude/` e
+  `siteatende-20260915T0502Z-claude-panelfix/`.
+- `wp-cli` tinha sumido do container `gr_wordpress` (perdido numa
+  recriação, como o README já avisava) — reinstalado a partir da cópia
+  salva em `/root/backups/gr-rename-20260913T0238Z/wp-cli.phar`.
+
 (livre) — tela administrativa adicionada ao plugin do assistente da GR Cartuchos para selecionar o provedor LLM e o modelo correspondente; o endpoint usa a configuração salva sem editar código. Padrão validado: Groq + `openai/gpt-oss-20b`. Também corrigido o fallback do chat causado por um header `X-WP-Nonce` vazio que gerava HTTP 403 no navegador. Leads agora são enviados para `janaine@grcartuchos.com.br`; remetente técnico permanece `rodolfo@grcartuchos.com.br`.
 
 (livre) — última coisa feita: backup diário completo da VPS ficou
