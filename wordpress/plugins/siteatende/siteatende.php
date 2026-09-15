@@ -2,7 +2,7 @@
 /**
  * Plugin Name: siteAtende
  * Description: Widget de atendimento para sites com LLM, texto configurável e formulário de lead.
- * Version: 1.1.6
+ * Version: 1.1.7
  * Author: siteAtende
  */
 
@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SITEATENDE_VERSION', '1.1.6');
+define('SITEATENDE_VERSION', '1.1.7');
 
 function siteatende_models()
 {
@@ -43,6 +43,8 @@ function siteatende_get_default_config()
         'intro_message' => 'Olá! Como posso ajudar com impressoras, suprimentos e suporte da GR Cartuchos?',
         'lead_button_text' => 'Quero um orçamento de locação',
         'lead_submit_text' => 'Enviar para a equipe comercial',
+        'contact_button_text' => 'Falar com um atendente',
+        'contact_submit_text' => 'Enviar para a equipe',
         'chat_placeholder' => 'Digite sua mensagem...',
         'success_message' => 'Formulário enviado com sucesso! Nossa equipe entrará em contato em breve.',
         'business_context' => "A GR Cartuchos atua desde 2006 em Guarulhos, São Paulo capital e Grande São Paulo.\n"
@@ -75,6 +77,8 @@ function siteatende_get_config()
         'intro_message' => isset($config['intro_message']) ? sanitize_text_field($config['intro_message']) : $default['intro_message'],
         'lead_button_text' => isset($config['lead_button_text']) ? sanitize_text_field($config['lead_button_text']) : $default['lead_button_text'],
         'lead_submit_text' => isset($config['lead_submit_text']) ? sanitize_text_field($config['lead_submit_text']) : $default['lead_submit_text'],
+        'contact_button_text' => isset($config['contact_button_text']) ? sanitize_text_field($config['contact_button_text']) : $default['contact_button_text'],
+        'contact_submit_text' => isset($config['contact_submit_text']) ? sanitize_text_field($config['contact_submit_text']) : $default['contact_submit_text'],
         'chat_placeholder' => isset($config['chat_placeholder']) ? sanitize_text_field($config['chat_placeholder']) : $default['chat_placeholder'],
         'success_message' => isset($config['success_message']) ? sanitize_text_field($config['success_message']) : $default['success_message'],
         'business_context' => isset($config['business_context']) ? sanitize_textarea_field($config['business_context']) : $default['business_context'],
@@ -106,6 +110,8 @@ function siteatende_sanitize_config($value)
         'intro_message' => sanitize_text_field($value['intro_message'] ?? $default['intro_message']),
         'lead_button_text' => sanitize_text_field($value['lead_button_text'] ?? $default['lead_button_text']),
         'lead_submit_text' => sanitize_text_field($value['lead_submit_text'] ?? $default['lead_submit_text']),
+        'contact_button_text' => sanitize_text_field($value['contact_button_text'] ?? $default['contact_button_text']),
+        'contact_submit_text' => sanitize_text_field($value['contact_submit_text'] ?? $default['contact_submit_text']),
         'chat_placeholder' => sanitize_text_field($value['chat_placeholder'] ?? $default['chat_placeholder']),
         'success_message' => sanitize_text_field($value['success_message'] ?? $default['success_message']),
         'business_context' => sanitize_textarea_field($value['business_context'] ?? $default['business_context']),
@@ -206,6 +212,19 @@ function siteatende_render_settings()
                     <th scope="row"><label for="siteatende-submit">Texto do botão do formulário</label></th>
                     <td>
                         <input id="siteatende-submit" type="text" name="siteatende_config[lead_submit_text]" value="<?php echo esc_attr($config['lead_submit_text']); ?>" class="regular-text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="siteatende-contact-button">Texto do botão "falar com atendente"</label></th>
+                    <td>
+                        <input id="siteatende-contact-button" type="text" name="siteatende_config[contact_button_text]" value="<?php echo esc_attr($config['contact_button_text']); ?>" class="regular-text" />
+                        <p class="description">Segundo botão do balão, separado do orçamento — para quem quer só falar com a equipe.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="siteatende-contact-submit">Texto do botão do formulário de contato</label></th>
+                    <td>
+                        <input id="siteatende-contact-submit" type="text" name="siteatende_config[contact_submit_text]" value="<?php echo esc_attr($config['contact_submit_text']); ?>" class="regular-text" />
                     </td>
                 </tr>
                 <tr>
@@ -457,6 +476,11 @@ function siteatende_handle_lead(WP_REST_Request $request)
         return $globalLimited;
     }
 
+    $type = ($payload['type'] ?? '') === 'contato' ? 'contato' : 'orcamento';
+    if ($type === 'contato') {
+        return siteatende_handle_contact_request($payload);
+    }
+
     $name = siteatende_clean_field($payload['name'] ?? '', 120);
     $company = siteatende_clean_field($payload['company'] ?? '', 120);
     $email = sanitize_email($payload['email'] ?? '');
@@ -498,6 +522,77 @@ function siteatende_handle_lead(WP_REST_Request $request)
 
     return new WP_REST_Response(array(
         'message' => 'Obrigado! Recebemos seus dados. Nossa equipe entrará em contato em breve.',
+    ), 200);
+}
+
+/**
+ * Second lead flow: "Falar com um atendente" — for anyone who wants human
+ * contact (a question, a problem, anything) rather than a rental quote.
+ * Same endpoint/rate limits/honeypot as siteatende_handle_lead(), branched
+ * by payload.type so the original orçamento flow above stays untouched.
+ */
+function siteatende_handle_contact_request($payload)
+{
+    $name = siteatende_clean_field($payload['name'] ?? '', 120);
+    $company = siteatende_clean_field($payload['company'] ?? '', 120);
+    $channelLabels = array('whatsapp' => 'WhatsApp', 'email' => 'e-mail', 'ligacao' => 'ligação');
+    $channelRaw = siteatende_clean_field($payload['preferred_channel'] ?? '', 20);
+    $channel = isset($channelLabels[$channelRaw]) ? $channelRaw : '';
+    $phone = siteatende_clean_field($payload['phone'] ?? '', 40);
+    $email = sanitize_email($payload['email'] ?? '');
+    $bestTime = siteatende_clean_field($payload['best_time'] ?? '', 120);
+    $message = siteatende_clean_field($payload['message'] ?? '', 1500, true);
+
+    if ($name === '' || $channel === '' || $message === '') {
+        return new WP_Error('invalid_contact', 'Informe nome, como prefere ser contatado e sua mensagem.', array('status' => 400));
+    }
+    if ($channel === 'email' && !is_email($email)) {
+        return new WP_Error('invalid_contact', 'Informe um e-mail válido.', array('status' => 400));
+    }
+    if (($channel === 'whatsapp' || $channel === 'ligacao') && $phone === '') {
+        return new WP_Error('invalid_contact', 'Informe um telefone com DDD.', array('status' => 400));
+    }
+    if ($channel === 'ligacao' && $bestTime === '') {
+        return new WP_Error('invalid_contact', 'Informe o melhor dia e horário para ligarmos.', array('status' => 400));
+    }
+
+    $config = siteatende_get_config();
+    $destination = $config['lead_email'];
+    if (!$destination || !is_email($destination)) {
+        $destination = getenv('GR_CARTUCHOS_LEAD_EMAIL') ?: 'janaine@grcartuchos.com.br';
+    }
+
+    $lines = array('Novo pedido de contato recebido pelo assistente do site', '', "Nome: {$name}");
+    if ($company !== '') {
+        $lines[] = "Empresa: {$company}";
+    }
+    $lines[] = 'Prefere ser contatado por: ' . $channelLabels[$channel];
+    if ($phone !== '') {
+        $lines[] = "Telefone/WhatsApp: {$phone}";
+    }
+    if ($email !== '') {
+        $lines[] = "E-mail: {$email}";
+    }
+    if ($bestTime !== '') {
+        $lines[] = "Melhor horário para ligar: {$bestTime}";
+    }
+    $lines[] = '';
+    $lines[] = "Mensagem: {$message}";
+    $lines[] = '';
+    $lines[] = 'Origem: widget do site (falar com um atendente)';
+
+    $headers = array();
+    if (is_email($email)) {
+        $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+    }
+
+    $sent = wp_mail($destination, 'Novo pedido de contato - ' . $name, implode("\n", $lines), $headers);
+    if (!$sent) {
+        return new WP_Error('lead_delivery_failed', 'Não foi possível enviar seus dados agora.', array('status' => 500));
+    }
+
+    return new WP_REST_Response(array(
+        'message' => 'Obrigado! Recebemos seu pedido. Nossa equipe vai falar com você o quanto antes, em horário comercial.',
     ), 200);
 }
 

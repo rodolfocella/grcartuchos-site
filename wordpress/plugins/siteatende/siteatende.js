@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const introMessage = cfg.intro_message || `Olá! Como posso ajudar com impressoras, suprimentos e suporte da ${siteName}?`;
   const leadButtonText = cfg.lead_button_text || 'Quero um orçamento de locação';
   const leadSubmitText = cfg.lead_submit_text || 'Enviar para a equipe comercial';
+  const contactButtonText = cfg.contact_button_text || 'Falar com um atendente';
+  const contactSubmitText = cfg.contact_submit_text || 'Enviar para a equipe';
   const chatPlaceholder = cfg.chat_placeholder || 'Digite sua mensagem...';
   const successMessage = cfg.success_message || 'Formulário enviado com sucesso! Nossa equipe entrará em contato em breve.';
   const escapeHtml = (value) => String(value)
@@ -190,19 +192,84 @@ document.addEventListener('DOMContentLoaded', () => {
         background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 100%);
       }
 
-      #gr-chat-lead-open {
-        width: calc(100% - 24px);
+      #gr-chat-quick-actions {
+        display: grid;
+        gap: 6px;
         margin: 10px 12px 0;
+      }
+
+      #gr-chat-lead-open,
+      #gr-chat-contact-open {
+        width: 100%;
         padding: 10px 12px;
         border: 0;
         border-radius: 10px;
-        background: #0f766e;
-        color: #fff;
         font-weight: 700;
         cursor: pointer;
       }
 
-      #gr-chat-lead-form {
+      #gr-chat-lead-open {
+        background: #0f766e;
+        color: #fff;
+      }
+
+      #gr-chat-contact-open {
+        background: #fff;
+        color: #0f766e;
+        border: 1.5px solid #0f766e;
+      }
+
+      #gr-chat-quick-actions[hidden] {
+        display: none;
+      }
+
+      .gr-channel-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 2px 0 1px;
+      }
+
+      .gr-channel-option {
+        position: relative;
+      }
+
+      .gr-channel-option input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+
+      .gr-channel-option span {
+        display: inline-block;
+        padding: 7px 12px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .gr-channel-option input:checked + span {
+        border-color: #0f766e;
+        background: #0f766e;
+        color: #fff;
+      }
+
+      .gr-channel-option input:focus-visible + span {
+        outline: 2px solid #0f766e;
+        outline-offset: 2px;
+      }
+
+      #gr-chat-contact-form [data-conditional][hidden] {
+        display: none;
+      }
+
+      #gr-chat-lead-form,
+      #gr-chat-contact-form {
         display: grid;
         gap: 7px;
         overflow-y: auto;
@@ -237,11 +304,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       #gr-chat-lead-form[hidden],
+      #gr-chat-contact-form[hidden],
       #gr-chat-form[hidden] {
         display: none;
       }
 
-      #gr-chat-lead-form .gr-chat-hp {
+      #gr-chat-lead-form .gr-chat-hp,
+      #gr-chat-contact-form .gr-chat-hp {
         position: absolute;
         left: -10000px;
         width: 1px;
@@ -250,7 +319,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       #gr-chat-lead-form input,
-      #gr-chat-lead-form textarea {
+      #gr-chat-lead-form textarea,
+      #gr-chat-contact-form input,
+      #gr-chat-contact-form textarea {
         box-sizing: border-box;
         width: 100%;
         padding: 9px 11px;
@@ -260,12 +331,14 @@ document.addEventListener('DOMContentLoaded', () => {
         font-size: 13px;
       }
 
-      #gr-chat-lead-form textarea {
+      #gr-chat-lead-form textarea,
+      #gr-chat-contact-form textarea {
         min-height: 58px;
         resize: vertical;
       }
 
-      #gr-chat-lead-form button {
+      #gr-chat-lead-form button,
+      #gr-chat-contact-form button {
         padding: 10px 12px;
         border: 0;
         border-radius: 8px;
@@ -343,7 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         #gr-chat-lead-form input,
         #gr-chat-lead-form textarea,
-        #gr-chat-lead-form button {
+        #gr-chat-lead-form button,
+        #gr-chat-contact-form input,
+        #gr-chat-contact-form textarea,
+        #gr-chat-contact-form button {
           font-size: 12px;
         }
 
@@ -364,6 +440,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .gr-chat-lead-title {
           font-size: 12px;
         }
+
+        .gr-channel-option span {
+          padding: 6px 10px;
+          font-size: 11.5px;
+        }
       }
     </style>
 
@@ -379,7 +460,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <button id="gr-chat-close" type="button" aria-label="Fechar chat">×</button>
       </div>
       <div id="gr-chat-messages"></div>
-      <button id="gr-chat-lead-open" type="button">${escapeHtml(leadButtonText)}</button>
+      <div id="gr-chat-quick-actions">
+        <button id="gr-chat-lead-open" type="button">${escapeHtml(leadButtonText)}</button>
+        <button id="gr-chat-contact-open" type="button">${escapeHtml(contactButtonText)}</button>
+      </div>
       <form id="gr-chat-lead-form" hidden>
         <div class="gr-chat-lead-header">
           <img class="gr-chat-lead-logo" src="${escapeHtml(logoUrl)}" alt="${escapeHtml(siteName)}" />
@@ -395,6 +479,34 @@ document.addEventListener('DOMContentLoaded', () => {
         <textarea name="notes" maxlength="1500" placeholder="Conte brevemente o que precisa"></textarea>
         <label class="gr-chat-hp" aria-hidden="true">Site <input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
         <button type="submit">${escapeHtml(leadSubmitText)}</button>
+      </form>
+      <form id="gr-chat-contact-form" hidden>
+        <div class="gr-chat-lead-header">
+          <img class="gr-chat-lead-logo" src="${escapeHtml(logoUrl)}" alt="${escapeHtml(siteName)}" />
+          <p class="gr-chat-lead-title">GR Cartuchos | Falar com a equipe</p>
+        </div>
+        <input name="name" type="text" maxlength="120" placeholder="Seu nome *" required />
+        <input name="company" type="text" maxlength="120" placeholder="Empresa (opcional)" />
+        <div class="gr-channel-group" role="radiogroup" aria-label="Como prefere ser contatado">
+          <label class="gr-channel-option">
+            <input type="radio" name="preferred_channel" value="whatsapp" checked />
+            <span>WhatsApp</span>
+          </label>
+          <label class="gr-channel-option">
+            <input type="radio" name="preferred_channel" value="email" />
+            <span>E-mail</span>
+          </label>
+          <label class="gr-channel-option">
+            <input type="radio" name="preferred_channel" value="ligacao" />
+            <span>Ligação</span>
+          </label>
+        </div>
+        <input data-conditional="phone" name="phone" type="tel" maxlength="40" placeholder="WhatsApp/telefone com DDD *" required />
+        <input data-conditional="email" name="email" type="email" maxlength="200" placeholder="Seu e-mail *" hidden />
+        <input data-conditional="best_time" name="best_time" type="text" maxlength="120" placeholder="Melhor dia e horário para ligarmos *" hidden />
+        <textarea name="message" maxlength="1500" placeholder="Como podemos ajudar? *" required></textarea>
+        <label class="gr-chat-hp" aria-hidden="true">Site <input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+        <button type="submit">${escapeHtml(contactSubmitText)}</button>
       </form>
       <form id="gr-chat-form">
         <input id="gr-chat-input" type="text" maxlength="2000" placeholder="${escapeHtml(chatPlaceholder)}" autocomplete="off" />
@@ -420,8 +532,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const greeting = widget.querySelector('#gr-chat-greeting');
   const closeButton = widget.querySelector('#gr-chat-close');
   const form = widget.querySelector('#gr-chat-form');
+  const quickActions = widget.querySelector('#gr-chat-quick-actions');
   const leadOpen = widget.querySelector('#gr-chat-lead-open');
   const leadForm = widget.querySelector('#gr-chat-lead-form');
+  const contactOpen = widget.querySelector('#gr-chat-contact-open');
+  const contactForm = widget.querySelector('#gr-chat-contact-form');
   const input = widget.querySelector('#gr-chat-input');
   const messages = widget.querySelector('#gr-chat-messages');
   const conversationHistory = [];
@@ -437,7 +552,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const showChatForm = () => {
     form.hidden = false;
     leadForm.hidden = true;
-    leadOpen.hidden = false;
+    contactForm.hidden = true;
+    quickActions.hidden = false;
     setTimeout(() => input.focus(), 50);
   };
 
@@ -465,10 +581,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   leadOpen.addEventListener('click', () => {
     form.hidden = true;
+    quickActions.hidden = true;
     leadForm.hidden = false;
-    leadOpen.hidden = true;
     leadForm.querySelector('input[name="name"]').focus();
   });
+
+  contactOpen.addEventListener('click', () => {
+    form.hidden = true;
+    quickActions.hidden = true;
+    contactForm.hidden = false;
+    contactForm.querySelector('input[name="name"]').focus();
+  });
+
+  // The contact form asks for phone, e-mail or a best-time-to-call depending
+  // on the channel the person actually picked — only that field is shown
+  // and required, so the team gets exactly what it needs to follow up.
+  const contactPhoneField = contactForm.querySelector('[data-conditional="phone"]');
+  const contactEmailField = contactForm.querySelector('[data-conditional="email"]');
+  const contactBestTimeField = contactForm.querySelector('[data-conditional="best_time"]');
+
+  const updateContactChannel = () => {
+    const channel = (contactForm.querySelector('input[name="preferred_channel"]:checked') || {}).value || 'whatsapp';
+
+    contactPhoneField.hidden = channel === 'email';
+    contactPhoneField.required = channel !== 'email';
+
+    contactEmailField.hidden = channel !== 'email';
+    contactEmailField.required = channel === 'email';
+
+    contactBestTimeField.hidden = channel !== 'ligacao';
+    contactBestTimeField.required = channel === 'ligacao';
+  };
+
+  contactForm.querySelectorAll('input[name="preferred_channel"]').forEach((radio) => {
+    radio.addEventListener('change', updateContactChannel);
+  });
+  updateContactChannel();
 
   const cleanLeadValue = (value) => {
     if (value === null || value === undefined) {
@@ -512,6 +660,41 @@ document.addEventListener('DOMContentLoaded', () => {
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = leadSubmitText;
+    }
+  });
+
+  contactForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = contactForm.querySelector('button');
+    const rawFormData = Object.fromEntries(new FormData(contactForm).entries());
+    const formData = Object.fromEntries(
+      Object.entries(rawFormData).map(([key, value]) => [key, cleanLeadValue(value)])
+    );
+    formData.type = 'contato';
+    submitButton.disabled = true;
+    submitButton.textContent = 'Enviando...';
+
+    try {
+      const response = await fetch('/wp-json/siteatende/v1/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Falha ao enviar contato');
+      }
+
+      appendMessage(data.message || successMessage, 'bot');
+      contactForm.reset();
+      updateContactChannel();
+      contactForm.hidden = true;
+      showChatForm();
+    } catch (error) {
+      appendMessage('Não consegui enviar seus dados agora. Tente novamente ou fale diretamente com a equipe comercial.', 'bot');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = contactSubmitText;
     }
   });
 
