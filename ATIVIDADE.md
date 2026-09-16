@@ -19,11 +19,31 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
-EM ANDAMENTO (2026-09-16): **página dedicada `/contato`**, a pedido do
-dono, reaproveitando o mesmo endpoint `POST /wp-json/siteatende/v1/lead`
-(`type: "contato"`) que o widget de chat já usa no fluxo "Falar com um
-atendente" — sem tocar no plugin `siteatende` nem no widget existente,
-só uma página nova que chama o mesmo endpoint.
+(livre) — 2026-09-16: **`/contato` já existia (página 48, formulário
+WPForms #104) — descoberto só depois de eu já ter criado uma segunda
+página por engano.** O dono pediu uma página de contato "parecida com a
+do zap-agenda"; eu não conferi antes se já existia uma, criei uma nova
+com `post_name=contato`, e o WordPress silenciosamente renomeou pra
+`contato-2` (sem erro) porque o slug já estava em uso. **Apaguei a
+duplicata (post 5769)** assim que percebi.
+
+**Achado real na página que já existia**: a notificação do WPForms #104
+mandava pra `janaine@grcartuchos.com.br,rodolfocella@gmail.com` juntos —
+o mesmo bug de e-mail misto interno+externo já documentado abaixo (caso
+do WooCommerce, 2026-09-15). Confirmei com um teste direto de
+`wp_mail()`: com os dois juntos, a função retorna `false` (diferente do
+caso do WooCommerce, aqui o e-mail *ainda chega* pra Janaine mesmo assim,
+mas quase certamente nunca chegou pro Gmail externo, já que esse relay
+não entrega fora de `@grcartuchos.com.br`). **Corrigido**: notificação
+agora só vai pra `janaine@grcartuchos.com.br` (mesma técnica de
+substituição de string usada no `_elementor_data`, sem decodificar o
+JSON inteiro). Reteste depois da correção: `wp_mail()` retornou `true` e
+o e-mail chegou no Maildir dela. Dois e-mails de teste ("TESTE
+diagnostico contato" e "... - pode apagar") ficaram na caixa da Janaine,
+pode apagar.
+
+Página `/contato` verificada no ar (HTTP 200) depois da correção; nada
+mais nela foi alterado.
 
 (livre) — 2026-09-15, continuação: **e-mail de "novo pedido" do
 WooCommerce agora avisa a Janaine.** O dono pediu que toda venda gere
