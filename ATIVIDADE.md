@@ -19,6 +19,45 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+(livre) — 2026-09-16: **análise do GA4 (28 dias) + correção de 404s
+reais.** Pedido pelo dono: acesso programático ao GA4 continua
+bloqueado (falta escopo `analytics.readonly` no token do Site Kit —
+reconectar não resolveu, precisa desconectar+revogar no Google e
+reconectar do zero; deixado pra depois). Dono colou o CSV do relatório
+manualmente.
+
+Achado principal: a página "Não encontrada" é a **2ª mais vista do
+site** (23 visualizações/28 dias). Fui nos logs do `zap_nginx` achar as
+URLs quebradas de verdade (cuidado: esse nginx serve vários domínios no
+mesmo log, sem campo de host — precisa filtrar por palavra-chave do
+conteúdo, não por domínio). Corrigido via `wordpress/mu-plugins/gr-fix-404s.php`
+(novo):
+- Slug com erro de acentuação: `aluguel-de-impressoras-gopoiva-guarulhos`
+  → corrigido o post 5755 pro certo (`gopouva`) + redirect do antigo.
+  **Atenção**: `wp post update --post_name=...` via CLI **não** aciona o
+  redirect automático de slug antigo do WordPress (`_wp_old_slug`) do
+  jeito que editar pelo wp-admin aciona — confirmado ao vivo (meta não
+  foi setada, URL antiga dava 404 puro). Sempre que trocar slug via
+  wp-cli, adicionar o redirect manualmente.
+- `impressora-multifuncional-laser-monocromatica-ricoh-mp-305spf` nunca
+  existiu nesse WordPress (nem em lixeira) — redirect pra categoria de
+  multifuncionais mono.
+- `/sistema/consultaimpressoras.php` (ferramenta legada HostGator, já
+  descartada como "sem tráfego" numa sessão anterior) na verdade recebeu
+  **15 acessos** nos últimos 28 dias — redirect pra home em vez de 404.
+- **Bug de JS real, ainda não achei a causa raiz**: várias URLs de
+  produto/carrinho terminando em `/null` (`/produto/{slug}/null`,
+  `/carrinho/null`) — provavelmente do widget "WP Menu Cart" ou do
+  carrinho customizado do header, gerando um link com variável
+  indefinida. Corrigido o sintoma (redirect genérico que corta o sufixo
+  `/null`), mas a causa raiz no JS continua sem achar — vale investigar
+  quando sobrar tempo.
+
+Também achados, sem correção ainda (precisam de decisão de conteúdo, não
+é bug técnico): página de Barueri com 83% de rejeição apesar de tráfego
+real, hub de São Paulo com 67%, Recarga de cartucho 75%, Assistência
+técnica Epson 57%.
+
 (livre) — 2026-09-16: **`/contato` já existia (página 48, formulário
 WPForms #104) — descoberto só depois de eu já ter criado uma segunda
 página por engano.** O dono pediu uma página de contato "parecida com a
