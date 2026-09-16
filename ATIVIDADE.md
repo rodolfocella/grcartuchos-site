@@ -19,6 +19,12 @@ Isso é só um acordo entre as sessões — não é reforçado por nenhuma
 ferramenta. Só funciona se as duas realmente checarem antes de agir.
 
 ## Claude
+EM ANDAMENTO (2026-09-16): **página dedicada `/contato`**, a pedido do
+dono, reaproveitando o mesmo endpoint `POST /wp-json/siteatende/v1/lead`
+(`type: "contato"`) que o widget de chat já usa no fluxo "Falar com um
+atendente" — sem tocar no plugin `siteatende` nem no widget existente,
+só uma página nova que chama o mesmo endpoint.
+
 (livre) — 2026-09-15, continuação: **e-mail de "novo pedido" do
 WooCommerce agora avisa a Janaine.** O dono pediu que toda venda gere
 aviso por e-mail pra `janaine@grcartuchos.com.br`. O WooCommerce já tem
